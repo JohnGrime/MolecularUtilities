@@ -2,6 +2,43 @@
 
 A suite of tools to assist with molecular simulations and analysis.
 
+## Contents
+
+* [Requirements](#Requirements)
+* [Platform Compatibility](#Compatibility)
+* [Building the programs](#Building)
+* [Running the programs](#Running)
+
+** [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
+
+** [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
+
+** [Centroids](#Centroids) : extract centroid structure from a set of input structures
+
+* [Distances](#Distances) : measure statistics on distances between PDB atoms in data sets
+
+* [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
+
+* [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
+
+* [Fuzzball](#Fuzzball) : generate fuzzball objects for Jesper Madsen's research.
+
+* [GenerateBilayers](#GenerateBilayers) : create bilayer systems for user specfied-lipids and geometries
+
+* [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
+
+* [LammpsCombiner](#LammpsCombiner) : combine LAMMPS config files, automatically renumbering bonds and angles etc.
+
+* [LammpsToXYZ](#LammpsToXYZ) : convert combine LAMMPS config/trajectory files into xyz format
+
+* [SphereArbitrary](#SphereArbitrary) : generate a sphere using an arbitrary number of surface points
+
+* [SphereBySubdivision](#SphereBySubdivision) : generate a sphere using poyhedral subdivision
+
+* [Superpose](#Superpose) : superpose arbitrary sets of PDB structures using filtered atom sets
+
+* [UnwrapTrajectory](#UnwrapTrajectory) : unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
+
 ## Requirements
 
 * Compiler supporting [c++11](https://en.wikipedia.org/wiki/C%2B%2B11)
@@ -66,33 +103,33 @@ All program can be run without command line options for user instructions and ex
 
 ## <a name="AxisAlign"></a> AxisAlign
 
-## BestStructuralMatch
+## <a name="AxisAlign"></a>BestStructuralMatch
 
-## Centroids
+## <a name="AxisAlign"></a>Centroids
 
-## Distances
+## <a name="AxisAlign"></a>Distances
 
-## FluctuationSpectrum
+## <a name="AxisAlign"></a>FluctuationSpectrum
 
-## FluctuationSpectrum2
+## <a name="AxisAlign"></a>FluctuationSpectrum2
 
-## Fuzzball
+## <a name="AxisAlign"></a>Fuzzball
 
-## GenerateBilayers
+## <a name="AxisAlign"></a>GenerateBilayers
 
-## GenerateMembranes
+## <a name="AxisAlign"></a>GenerateMembranes
 
-## LammpsCombiner
+## <a name="AxisAlign"></a>LammpsCombiner
 
-## LammpsToXYZ
+## <a name="AxisAlign"></a>LammpsToXYZ
 
-## SphereArbitrary
+## <a name="AxisAlign"></a>SphereArbitrary
 
-## SphereBySubdivision
+## <a name="AxisAlign"></a>SphereBySubdivision
 
-## Superpose
+## <a name="AxisAlign"></a>Superpose
 
-## UnwrapTrajectory
+## <a name="AxisAlign"></a>UnwrapTrajectory
 
 
 
