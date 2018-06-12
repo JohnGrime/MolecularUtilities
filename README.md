@@ -4,10 +4,9 @@ A suite of tools to assist with molecular simulations and analysis.
 
 ## Contents
 
+* [Introduction](#Introduction)
 * [Requirements](#Requirements)
-* [Platform Compatibility](#Compatibility)
 * [Building the programs](#Building)
-* [Running the programs](#Running)
 * The utilities:
   * [AxisAlign](#AxisAlign)
   * [BestStructuralMatch](#BestStructuralMatch)
@@ -23,16 +22,20 @@ A suite of tools to assist with molecular simulations and analysis.
   * [Superpose](#Superpose)
   * [UnwrapTrajectory](#UnwrapTrajectory)
 
-## Requirements
+## <a name="Introduction"></a> Introduction
+
+Protein data bank format ([PDB](https://www.rcsb.org/))
+Large-scale Atomic/Molecular Massively Parallel Simulator ([LAMMPS](http://lammps.sandia.gov/))
+
+All program can be run without command line options for user instructions and example usage.
+
+## <a name="Requirements"></a> Requirements
 
 * Compiler supporting [c++11](https://en.wikipedia.org/wiki/C%2B%2B11)
+* [Gnu make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (for using the PDB utility script)
 
-## Platform compatibility
-
-In principle, anything with a c++11 compiler and a Python (2+) installation!
-
-## Building the programs
+## <a name="Building"></a> Building the programs
 
 Simply call `make` in the project directory to build the programs; the binaries are placed into a `bin` subdirectory.
 
@@ -46,37 +49,33 @@ Note that you may need to change the `CC` variable if your default compiler does
 
 ... and you should then have a fluctuation spectrum analysis program with OpenMP acceleration.
 
-## Running the programs
-
-All program can be run without command line options for user instructions and example usage.
-
 ## <a name="AxisAlign"></a> AxisAlign
 
-Align PDB structure to specified Cartesian axes using filtered atom sets
+Align major molecular axes of a PDB structure to the specified Cartesian axes. Supports alignment on a filtered subset of particles.
 
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-Find structure in a data set that matches most closesly (via RMSD) a reference structure
+Find molecular structure in a data set that matches most closesly a refernece structure (via root-mean-squared-deviation, RMSD).
 
 ## <a name="Centroids"></a> Centroids
 
-Extract centroid structure from a set of input structures
+Extract the centroid "pseudoparticles" from a set of PDB input structures.
 
 ## <a name="Distances"></a> Distances
 
-Measure statistics on distances between PDB atoms in data sets
+Measure statistics regarding the distances between PDB atoms in multiple data sets.
 
 ## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
 
-Generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
+Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
 ## <a name="FluctuationSpectrum2"></a> FluctuationSpectrum2
 
-Generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
+Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS config class)
 
 ## <a name="GenerateMembranes"></a> GenerateMembranes
 
-Create both monolayer and bilayer systems for multiple user-specfied lipids and geometries.
+Create monolayer and/or bilayer systems using user-defined lipid molecules and surface geometries.
 
 ## <a name="LammpsCombiner"></a> LammpsCombiner
 
