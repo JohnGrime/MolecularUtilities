@@ -31,7 +31,7 @@ All program can be run without command line options for user instructions and ex
 
 ## Contents
 
-* [AxisAlign][#AxisAlign] : align PDB structure to specified Cartesian axes using filtered atom sets
+* [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
 
 **BestStructuralMatch** : find structure in a data set that matches most closesly (via RMSD) a reference structure
 
