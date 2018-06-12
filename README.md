@@ -9,15 +9,15 @@ A suite of tools to assist with molecular simulations and analysis.
 * [Building the programs](#Building)
 * [Running the programs](#Running)
 
-** [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
+  * [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
 
-** [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
+  * [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
 
-** [Centroids](#Centroids) : extract centroid structure from a set of input structures
+  * [Centroids](#Centroids) : extract centroid structure from a set of input structures
 
-* [Distances](#Distances) : measure statistics on distances between PDB atoms in data sets
+  * [Distances](#Distances) : measure statistics on distances between PDB atoms in data sets
 
-* [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
+  * [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
 * [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
 
