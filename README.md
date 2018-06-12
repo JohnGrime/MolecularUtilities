@@ -10,7 +10,7 @@ A suite of tools to assist with molecular simulations and analysis.
 * [Running the programs](#Running)
 * The utilities:
 
-  * [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
+  * [AxisAlign](#AxisAlign)
 
   * [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
 
@@ -21,10 +21,6 @@ A suite of tools to assist with molecular simulations and analysis.
   * [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
   * [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
-
-  * [Fuzzball](#Fuzzball) : generate fuzzball objects for Jesper Madsen's research.
-
-  * [GenerateBilayers](#GenerateBilayers) : create bilayer systems for user specfied-lipids and geometries
 
   * [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
 
@@ -69,33 +65,50 @@ All program can be run without command line options for user instructions and ex
 
 ## <a name="AxisAlign"></a> AxisAlign
 
-## <a name="AxisAlign"></a>BestStructuralMatch
+Align PDB structure to specified Cartesian axes using filtered atom sets
 
-## <a name="AxisAlign"></a>Centroids
+## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-## <a name="AxisAlign"></a>Distances
+Find structure in a data set that matches most closesly (via RMSD) a reference structure
 
-## <a name="AxisAlign"></a>FluctuationSpectrum
+## <a name="Centroids"></a> Centroids
 
-## <a name="AxisAlign"></a>FluctuationSpectrum2
+Extract centroid structure from a set of input structures
 
-## <a name="AxisAlign"></a>Fuzzball
+## <a name="Distances"></a> Distances
 
-## <a name="AxisAlign"></a>GenerateBilayers
+Measure statistics on distances between PDB atoms in data sets
 
-## <a name="AxisAlign"></a>GenerateMembranes
+## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
 
-## <a name="AxisAlign"></a>LammpsCombiner
+Generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
-## <a name="AxisAlign"></a>LammpsToXYZ
+## <a name="FluctuationSpectrum2"></a> FluctuationSpectrum2
 
-## <a name="AxisAlign"></a>SphereArbitrary
+Generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
 
-## <a name="AxisAlign"></a>SphereBySubdivision
+## <a name="GenerateMembranes"></a> GenerateMembranes
 
-## <a name="AxisAlign"></a>Superpose
+Create both monolayer and bilayer systems for multiple user-specfied lipids and geometries.
 
-## <a name="AxisAlign"></a>UnwrapTrajectory
+## <a name="LammpsCombiner"></a> LammpsCombiner
 
+Combine LAMMPS config files, automatically renumbering bonds and angles etc.
 
+## <a name="LammpsToXYZ"></a> LammpsToXYZ
 
+## <a name="SphereArbitrary"></a> SphereArbitrary
+
+Generate a sphere using an arbitrary number of surface points
+
+## <a name="SphereBySubdivision"></a> SphereBySubdivision
+
+Generate a sphere using poyhedral subdivision (cna provide more regular spacing that `SphereArbitrary`)
+
+## <a name="Superpose"></a> Superpose
+
+Superpose arbitrary sets of PDB structures using filtered atom sets
+
+## <a name="UnwrapTrajectory"></a> UnwrapTrajectory
+
+Unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
