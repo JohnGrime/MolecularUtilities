@@ -9,32 +9,19 @@ A suite of tools to assist with molecular simulations and analysis.
 * [Building the programs](#Building)
 * [Running the programs](#Running)
 * The utilities:
-
   * [AxisAlign](#AxisAlign)
-
-  * [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
-
-  * [Centroids](#Centroids) : extract centroid structure from a set of input structures
-
-  * [Distances](#Distances) : measure statistics on distances between PDB atoms in data sets
-
-  * [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
-
-  * [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
-
-  * [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
-
-  * [LammpsCombiner](#LammpsCombiner) : combine LAMMPS config files, automatically renumbering bonds and angles etc.
-
-  * [LammpsToXYZ](#LammpsToXYZ) : convert combine LAMMPS config/trajectory files into xyz format
-
-  * [SphereArbitrary](#SphereArbitrary) : generate a sphere using an arbitrary number of surface points
-
-  * [SphereBySubdivision](#SphereBySubdivision) : generate a sphere using poyhedral subdivision
-
-  * [Superpose](#Superpose) : superpose arbitrary sets of PDB structures using filtered atom sets
-
-  * [UnwrapTrajectory](#UnwrapTrajectory) : unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
+  * [BestStructuralMatch](#BestStructuralMatch)
+  * [Centroids](#Centroids)
+  * [Distances](#Distances)
+  * [FluctuationSpectrum](#FluctuationSpectrum)
+  * [FluctuationSpectrum2](#FluctuationSpectrum2)
+  * [GenerateMembranes](#GenerateMembranes)
+  * [LammpsCombiner](#LammpsCombiner)
+  * [LammpsToXYZ](#LammpsToXYZ)
+  * [SphereArbitrary](#SphereArbitrary)
+  * [SphereBySubdivision](#SphereBySubdivision)
+  * [Superpose](#Superpose)
+  * [UnwrapTrajectory](#UnwrapTrajectory)
 
 ## Requirements
 
