@@ -8,6 +8,7 @@ A suite of tools to assist with molecular simulations and analysis.
 * [Platform Compatibility](#Compatibility)
 * [Building the programs](#Building)
 * [Running the programs](#Running)
+* The utilities:
 
   * [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
 
@@ -19,25 +20,25 @@ A suite of tools to assist with molecular simulations and analysis.
 
   * [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
-* [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
+  * [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
 
-* [Fuzzball](#Fuzzball) : generate fuzzball objects for Jesper Madsen's research.
+  * [Fuzzball](#Fuzzball) : generate fuzzball objects for Jesper Madsen's research.
 
-* [GenerateBilayers](#GenerateBilayers) : create bilayer systems for user specfied-lipids and geometries
+  * [GenerateBilayers](#GenerateBilayers) : create bilayer systems for user specfied-lipids and geometries
 
-* [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
+  * [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
 
-* [LammpsCombiner](#LammpsCombiner) : combine LAMMPS config files, automatically renumbering bonds and angles etc.
+  * [LammpsCombiner](#LammpsCombiner) : combine LAMMPS config files, automatically renumbering bonds and angles etc.
 
-* [LammpsToXYZ](#LammpsToXYZ) : convert combine LAMMPS config/trajectory files into xyz format
+  * [LammpsToXYZ](#LammpsToXYZ) : convert combine LAMMPS config/trajectory files into xyz format
 
-* [SphereArbitrary](#SphereArbitrary) : generate a sphere using an arbitrary number of surface points
+  * [SphereArbitrary](#SphereArbitrary) : generate a sphere using an arbitrary number of surface points
 
-* [SphereBySubdivision](#SphereBySubdivision) : generate a sphere using poyhedral subdivision
+  * [SphereBySubdivision](#SphereBySubdivision) : generate a sphere using poyhedral subdivision
 
-* [Superpose](#Superpose) : superpose arbitrary sets of PDB structures using filtered atom sets
+  * [Superpose](#Superpose) : superpose arbitrary sets of PDB structures using filtered atom sets
 
-* [UnwrapTrajectory](#UnwrapTrajectory) : unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
+  * [UnwrapTrajectory](#UnwrapTrajectory) : unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
 
 ## Requirements
 
@@ -65,41 +66,6 @@ Note that you may need to change the `CC` variable if your default compiler does
 ## Running the programs
 
 All program can be run without command line options for user instructions and example usage.
-
-## Contents
-
-* [AxisAlign](#AxisAlign) : align PDB structure to specified Cartesian axes using filtered atom sets
-
-* [BestStructuralMatch](#BestStructuralMatch) : find structure in a data set that matches most closesly (via RMSD) a reference structure
-
-* [Centroids](#Centroids) : extract centroid structure from a set of input structures
-
-* [Distances](#Distances) : measure statistics on distances between PDB atoms in data sets
-
-* [FluctuationSpectrum](#FluctuationSpectrum) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS trajectory frame class)
-
-* [FluctuationSpectrum2](#FluctuationSpectrum2) : generate bilayer membrane fluctuation spectra from LAMMPS trajectories (using LAMMPS config frame class)
-
-* [Fuzzball](#Fuzzball) : generate fuzzball objects for Jesper Madsen's research.
-
-* [GenerateBilayers](#GenerateBilayers) : create bilayer systems for user specfied-lipids and geometries
-
-* [GenerateMembranes](#GenerateMembranes) : create both monolayer and bilayer systems for multiple user-specfied lipids and geometries. More powerful than GenerateBilayers, but slightly more complicated.
-
-* [LammpsCombiner](#LammpsCombiner) : combine LAMMPS config files, automatically renumbering bonds and angles etc.
-
-* [LammpsToXYZ](#LammpsToXYZ) : convert combine LAMMPS config/trajectory files into xyz format
-
-* [SphereArbitrary](#SphereArbitrary) : generate a sphere using an arbitrary number of surface points
-
-* [SphereBySubdivision](#SphereBySubdivision) : generate a sphere using poyhedral subdivision
-
-* [Superpose](#Superpose) : superpose arbitrary sets of PDB structures using filtered atom sets
-
-* [UnwrapTrajectory](#UnwrapTrajectory) : unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
-
-
-
 
 ## <a name="AxisAlign"></a> AxisAlign
 
