@@ -18,6 +18,8 @@
 
 Align major molecular axes of a PDB structure to the specified Cartesian axes. Supports alignment on a filtered subset of particles.
 
+![](Images/AA_1.png)
+
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
 Find molecular structure in a data set that matches most closesly a refernece structure (via root-mean-squared-deviation, RMSD).
