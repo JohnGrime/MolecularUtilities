@@ -263,6 +263,12 @@ class MembraneGrid
 };
 
 
+//
+// A Gridfilter allows us to filter out lipids etc that have popped out of the
+// main membrane; these molecules should not be included in the fluctuation
+// calculations, as they do not represent any point contiguous with the surface
+// of the undulating membrane.
+//
 class GridFilter
 {
 	public:
@@ -726,8 +732,8 @@ struct Data
 //
 // This is designed to deal with situations where a bilayer leaflet drifts across
 // a periodic boundary: this will screw up the fluctuation calculation, which typically
-// manifests in a sudden and drastic increase in the amplitude of fluctiation models
-// ( and hence, a massive decrease in e.g. the bending modulus kC ).
+// manifests in a sudden and drastic increase in the amplitude of fluctuation modes
+// (and hence, a massive decrease in e.g. the bending modulus kC).
 //
 class GridRemapper
 {
