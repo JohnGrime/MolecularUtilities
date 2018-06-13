@@ -32,7 +32,7 @@ This script performs a wide range of useful operations on PDB data piped in over
 
 **Examples**: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, and the overall structure can be seen in **Fig. 1a** with each of the five chains rendered in a different color.
 
-![Figure 1a](Images/PDBTool_1a.png)
+![Figure 1a](../Images/PDBTool_1a.png)
 
 *Example X*: To extract chain A and C from the 3P05 structure, redirecting the output to the file `test.pdb`:
 
@@ -46,7 +46,7 @@ Note that although chains can be filtered in this manner, this approach will lik
 	Scripts $ cat ../PDB_sources/3P05.pdb | ./PDBTool.py extract_chains A C > test.pdb
 	Scripts $
 
-![Figure 1b](Images/PDBTool_1b.png)
+![Figure 1b](../Images/PDBTool_1b.png)
 
 *Example X*: To extract only the N-terminal domains from the 3P05 structure (i.e., residue sequence of approximately 1 to 145 in each chain):
 
@@ -55,7 +55,7 @@ Note that although chains can be filtered in this manner, this approach will lik
 
 The results of this operation are shown in **Fig. 1c**, where we observe the molecular "skirt" surrounding the structure (formed of residue sequences over 145) has been removed.
 
-![Figure 1c](Images/PDBTool_1c.png)
+![Figure 1c](../Images/PDBTool_1c.png)
 
 *Example X*: To extract only the carbon alpha atoms of the N-terminal domains of chains B and D of the 3P05 structure
 
@@ -64,7 +64,7 @@ The results of this operation are shown in **Fig. 1c**, where we observe the mol
 
 The results of this operation are shown in **Fig. 1d**, where we observe the molecular complexity has been significantly reduced in addition to removing the molecular "skirt" of the extracted chains.
 
-![Figure 1d](Images/PDBTool_1d.png)
+![Figure 1d](../Images/PDBTool_1d.png)
 
 Note that this same result can also be achieved by piping the results of a filter operation back into `PDBTool` with the `extract_chains` option:
 
@@ -79,4 +79,4 @@ Note that this same result can also be achieved by piping the results of a filte
 
 The results of this rather bizarre sequence of operations is shown in **Fig. 1e**.
 
-![Figure 1e](Images/PDBTool_1e.png)
+![Figure 1e](../Images/PDBTool_1e.png)
