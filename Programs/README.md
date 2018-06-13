@@ -2,6 +2,8 @@
 
 This guide assumes basic familiarity with the [PDB file format](https://www.rcsb.org/), specifically the various data entries in [ATOM](https://en.wikipedia.org/wiki/Protein_Data_Bank_(file_format)) fields (which are typically used when defining filters for atomic data in the utilities etc).
 
+The compiled molecular utilities are:
+
 * [AxisAlign](#AxisAlign)
 * [BestStructuralMatch](#BestStructuralMatch)
 * [Centroids](#Centroids)
