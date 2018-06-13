@@ -344,22 +344,20 @@ Running the program with no command line options reveals a brief user guide:
 	bond_length = 7.5
 	leaflet_separation = 7.5
 
+	*
+	* Generating surfaces
+	*
+
+	Sphere.
+	  Outer leaflet : radius 100, 1539 lipids, VPL = 1050.26, APL 81.6528
+	  Inner leaflet : radius 62.5, 883 lipids, VPL = 1050.01, APL 55.5916
+
 	MolecularUtilities $ 
 
 Here, we defined two lipid types with a different "head" bead type, but both have two identical hydrocarbon "tail" beads. The resultant output configuration is shown below, as both a "full" view of the system and a "cut-away" view to better see the bilayer structure; the "head" beads of lipid types 1 and 2 are shown in red and orange respectively, and the "tail" beads are shown in gray.
 
 ![A two-component CG spherical bilayer](../Images/GM_1.png)
 ![Cut-away view of a two-component CG spherical bilayer](../Images/GM_2.png)
-
-
-*
-* Generating surfaces
-*
-
-Sphere.
-  Outer leaflet : radius 100, 1539 lipids, VPL = 1050.26, APL 81.6528
-  Inner leaflet : radius 62.5, 883 lipids, VPL = 1050.01, APL 55.5916
-
 
 
 ## <a name="LammpsCombiner"></a> LammpsCombiner
@@ -525,7 +523,7 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="UnwrapTrajectory"></a> UnwrapTrajectory
 
-_Unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries._
+_Unwrap molecules in a LAMMPS trajectory so they are not broken across periodic boundaries._
 
 This functionality can be useful when visualizing molecular systems to ensure that molecules are contiguous in space, rather than seeing discontinuities in molecular structures due to coordinates being wrapped across [periodic boundary conditions](https://en.wikipedia.org/wiki/Periodic_boundary_conditions).
 

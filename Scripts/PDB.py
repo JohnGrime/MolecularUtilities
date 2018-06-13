@@ -105,15 +105,9 @@ def MakeEmptyPDBAtom():
 
 
 def MakePDBAtomLine( atom ):
-	# NOTE; this first section is the ACTUAL format, where we assume ALL fields from PDB populated with valid data. This is rarely the case!
-#	PDB_atom_line_format = '%6s%5d %4s%1s%3s %1s%4d%1s   %8.3f%8.3f%8.3f%6.2f%6.2f          %2s%2s'
-	# Here we switch the occupancy and tempFactor fields for strings of same length; this way we can insert blank fields where no data given.
-	# also, we check some frequently omitted fields from the PDB source, and simply use spaces in the blanks where no values are found for those fields.
-#	PDB_atom_line_format = '%-6.6s%5d %4.4s%1.1s%3.3s %1.1s%4d%1.1s   %8.3f%8.3f%8.3f%6.6s%6.6s          %2.2s%2.2s'
 	PDB_atom_line_format = '%-6.6s%5.5s %4.4s%1.1s%3.3s %1.1s%4d%1.1s   %8.2f%8.2f%8.2f%6.6s%6.6s          %2.2s%2.2s'
 
-
-	#check a few things that might be missing, and add blanks
+	#check a few things that might be missing, and add dummy values if needed
 	checks = { 'occupancy':'%6.2f', 'tempFactor':'%6.2f', 'element':'%2.2s', 'charge':'%2.2s' }
 	checked_values = {}
 	for key in checks.keys():

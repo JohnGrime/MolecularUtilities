@@ -1,13 +1,32 @@
+#!/usr/bin/python
+
 #
 #   Author: John Grime, The University of Chicago.
 #
 
-import sys, math, PDBTools
+import sys, math, PDB
 
-#
-# Convert string to the type 'i<range_sep>j' into a range of numbers from i to j inclusive.
-#
+
 def expand_range( range_string, range_sep ):
+    """
+    Convert a range string into a list of integers
+
+    Args:
+        range_string (string): text representation of integer range
+        range_sep (string): range separator character
+
+    Returns:
+        list of integers from start index to stop index INCLUSIVE, or None if
+        failed to convert input string.
+
+    Example:
+
+        >>> expand_range( '1-10', '-' )
+        [1,2,3,4,5,6,7,8,9,10]
+
+        >>> expand_range( '5:9', ':' )
+        [5,6,7,8,9]
+    """
     tokens = range_string.split( range_sep )
     if len(tokens) < 2: return None
 
@@ -20,10 +39,28 @@ def expand_range( range_string, range_sep ):
     indices = range( start, stop+1 )
     return indices
 
+
 #
 # Calls expand_range() on a set of range strings separated as specified.
 #
 def expand_ranges( range_strings, entry_sep, range_sep ):
+    """
+    Convert a list of range strings into a combined list of integers
+
+    Args:
+        range_strings (string): text representation of set of integer ranges
+        entry_sep (string): separator for the individual range strings
+        range_sep (string): range separator character
+
+    Returns:
+        combined list of integers from all defined ranges, or None if
+        failure to parse/convert the range string.
+
+    Example:
+
+        >>> expand_range( '1-4:21-25:111-113', ':', '-' )
+        [1,2,3,4,21,22,23,24,25,111,112,113]
+    """
     indices = []
     tokens = range_strings.split( entry_sep )
     for t in tokens:
@@ -32,10 +69,18 @@ def expand_ranges( range_strings, entry_sep, range_sep ):
         indices.append( ind )
     return indices
 
-#
-# Add delta to all resSeq
-#
+
 def renumber( molecules, delta ):
+    """
+    Add specified delta to the resSeq entry of all specified PDB molecules
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to modify
+        delta (integer): offset to add to resSeq in each molecule
+
+    Returns:
+        list of updated PDB molecules
+    """
     new_molecules = []
     for mol in molecules:
         new_mol = []
@@ -51,6 +96,15 @@ def renumber( molecules, delta ):
 # Rename chains sequentially, according to PDB spec
 #
 def fix_chains( molecules ):
+    """
+    Rename chains in PDB molecules to be sequential as per PDB specification
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to modify
+
+    Returns:
+        list of updated PDB molecules
+    """
     chains = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     new_molecules = []
     for mol in molecules:
@@ -64,10 +118,18 @@ def fix_chains( molecules ):
     return new_molecules
 
 
-#
-# Extract specified chains
-#
 def extract_chains( molecules, chain_IDs, preserve_order = False ):
+    """
+    Extract specified chains from PDB molecules where
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to modify
+        chain_IDs (list of strings): chain IDs to extract
+        preserve_order (boolean): if True, maintain order of chains in the file. Otherwise, use order of appearance from chain_IDs
+
+    Returns:
+        list of extracted chains as PDB molecules
+    """
     new_molecules = []
 
     # preserve ordering from PDB file
@@ -89,38 +151,69 @@ def extract_chains( molecules, chain_IDs, preserve_order = False ):
 
     return new_molecules
 
-#
-# Extract specified molecules (set_indices are UNIT BASED!)
-#
-def extract_mols( molecules, set_size, set_indices ):
-	new_molecules = []
-	for set_i in set_indices:
-		i = ( (set_i-1)*set_size ) # convert to UNIT BASED!
-		j = ( set_i*set_size )
-		for mol_i in range(i,j):
-			new_mol = [ dict(a) for a in molecules[mol_i] ]
-			new_molecules.append( new_mol )
-	return new_molecules
 
-#
-# Filter atoms
-#
+def extract_mols( molecules, set_size, set_indices ):
+    """
+    Extract specified sets of contiguous PDB molecules, with a specified set size
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data
+        set_size (integer): number of consecutive atoms to view as a distinct set
+        set_indices (list of integers): indices of sets to extract (UNIT BASED!)
+
+    Returns:
+        list of extracted atom sets, with each set as a separate PDB molecule
+    """
+    new_molecules = []
+    for set_i in set_indices:
+        i = ( (set_i-1)*set_size ) # convert to UNIT BASED!
+        j = ( set_i*set_size )
+        for mol_i in range(i,j):
+            new_mol = [ dict(a) for a in molecules[mol_i] ]
+            new_molecules.append( new_mol )
+    return new_molecules
+
+
 def filter_molecules( molecules, filter_strings ):
+    """
+    Filter molecules to produce a new set of molecules containing only atoms that passed the filter(s)
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to filter
+        filter_strings (list of strings): filters to apply, using PDB ATOM-style fields
+
+    Returns:
+        list of molecules containing filtered data.
+
+    Notes:
+
+        - filter strings are in the form `key=value,key=value,...`, where numerical ranges are INCLUSIVE and
+          indicated using a dash to separate the start and end indices, e.g. `name=CA,resSeq=2-14`
+        - if no atoms in a molecule pass the filter, an empty molecule results
+    """
     filters = {}
     for f in filter_strings:
-        PDBTools.UpdateFilters( f, filters, '=', ',', '-' )
+        PDB.UpdateFilters( f, filters, '=', ',', '-' )
     
     new_molecules = []
     for mol in molecules:
-        new_mol = PDBTools.FilterAtoms( mol, filters )
+        new_mol = PDB.FilterAtoms( mol, filters )
         new_molecules.append( new_mol )
     
     return new_molecules
 
-#
-# Scale all coords
-#
+
 def scale_molecules( molecules, scale ):
+    """
+    Scale all coordinates in molecules
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to scale
+        scale (float): scale factor to apply
+
+    Returns:
+        list of molecules containing scaled data.
+    """
     new_molecules = []
     for mol in molecules:
         new_mol = []
@@ -133,10 +226,17 @@ def scale_molecules( molecules, scale ):
         new_molecules.append( new_mol )
     return new_molecules
 
-#
-# Reset centre of geometry
-#
+
 def recentre( molecules ):
+    """
+    Translate molecules such that their combined centre-of-geometry is at the origin
+
+    Args:
+        molecules (list of PDB molecules): mmolecular data to translate
+
+    Returns:
+        list of translated molecules
+    """
     new_molecules = []
     x, y, z, N = 0.0, 0.0, 0.0, 0
 
@@ -190,7 +290,6 @@ if len(sys.argv) < 2:
 #
 # Get params
 #
-#pdb_path = sys.argv[1]
 action = sys.argv[1]
 params = sys.argv[2:]
 
@@ -200,9 +299,8 @@ params = sys.argv[2:]
 if sys.stdin.isatty() == True:
     print_usage( sys.argv[0] )
 
-#lines = open( pdb_path ).readlines()
 lines = sys.stdin.readlines()
-molecules = PDBTools.GetPDBMolecules( lines )
+molecules = PDB.GetPDBMolecules( lines )
 
 #
 # Figure out what to do, and generate new_molecules
@@ -246,6 +344,6 @@ elif action == 'scale':
 #
 for mol in new_molecules:
     for a in mol:
-        outline = PDBTools.MakePDBAtomLine( a )
+        outline = PDB.MakePDBAtomLine( a )
         print outline
     print 'TER   '
