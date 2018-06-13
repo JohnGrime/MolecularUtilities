@@ -95,7 +95,7 @@ Running the program with no command line options reveals a brief user guide:
 
 Here we specify to only use atoms with name `CA` for the comparison, and only use atoms from residues numbered 1 to 145 (these form the "head" of each protein).
 
-The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD fro the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
+The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD for the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
 
 
 ## <a name="Centroids"></a> Centroids
@@ -205,7 +205,7 @@ Here we only examine distances from a single input set (`3P05`), but you can act
 
 _Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using specialized LAMMPS file handling code)._
 
-This functionality can be useful in determining certain physical properties of a membrane system, for example the compressibility modulus or the bending modulus.
+This functionality can be useful in determining certain physical properties of a membrane system, for example the compressibility modulus or the bending modulus, by performing a 2-D Fourier transform of the membrane interface and generating a spectra of the undulatory motions.
 
 Running the program with no command line options reveals a brief user guide:
 
@@ -356,7 +356,7 @@ Running the program with no command line options reveals a brief user guide:
 
 _Generate near-equidistant points on the surface of a sphere using poyhedral subdivision._
 
-This functionality can be useful when you require more regularity in the point spacing vs [SphereArbitrary](#SphereArbitrary)
+This functionality can be useful when you require more regularity in the point spacing vs [SphereArbitrary](#SphereArbitrary). However, due to the nature of polyhedral subdivision, it may not be possible to return _exactly_ the number of points requested; is the precise number of points is important, be sure to check the output or simply use [SphereArbitrary](#SphereArbitrary) instead.
 
 Running the program with no command line options reveals a brief user guide:
 
