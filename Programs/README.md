@@ -1,6 +1,6 @@
 # Contents
 
-This guide assumes basic familiarity with the [PDB file format](https://www.rcsb.org/), specifically the various data entries in `ATOM` fields (which are typically used when defining filters for atomic data in the utilities etc).
+This guide assumes basic familiarity with the [PDB file format](https://www.rcsb.org/), specifically the various data entries in [ATOM](https://en.wikipedia.org/wiki/Protein_Data_Bank_(file_format)) fields (which are typically used when defining filters for atomic data in the utilities etc).
 
 * [AxisAlign](#AxisAlign)
 * [BestStructuralMatch](#BestStructuralMatch)
@@ -16,9 +16,12 @@ This guide assumes basic familiarity with the [PDB file format](https://www.rcsb
 * [Superpose](#Superpose)
 * [UnwrapTrajectory](#UnwrapTrajectory)
 
+
 ## <a name="AxisAlign"></a> AxisAlign
 
-Align major molecular axes of a PDB structure to the specified Cartesian axes. Supports alignment on a filtered subset of particles.
+This program will align the molecular axes of a PDB structure to the specified Cartesian axes, with the option to use only a filtred subset of the particles in the calculation of the molecular axes.
+
+This functionality is useful for visualization, and aligned molecules are useful for e.g. building up complicated molecular systems with specific initial conditions.
 
 Running the program with no command line options revelas a brief user guide:
 
@@ -55,25 +58,89 @@ Here, we define a filter such that only the atoms with the name `CA` (i.e., carb
 
 ![aligned structure](../Images/AA_1.png)
 
+
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-Find molecular structure in a data set that matches most closesly a refernece structure (via root-mean-squared-deviation, RMSD).
+This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure.
+
+This functionality is useful to identify one or more "typical" conformations of a molecule, given an ensemble of structures.
+
+Running the program with no command line options revelas a brief user guide:
+
+	MolecularUtilities $ bin/BestStructuralMatch 
+	Usage: bin/BestStructuralMatch reference.pdb set_size data.pdb [filter_name=v1,v2,...] [filter_name=v1,v2,...]
+	Where:
+	  - reference.pdb : the reference structure(s) to compare to
+	  - set_size : number of consecutive PDB molecules in the input file to group
+	  - data.pdb : the potential candidate structures to compare to reference.pdb
+	  - OPTIONAL filters : used in the superposition/RMSD comparison
+	Notes:
+	  Consecutive set_size entries from reference.pdb and data.pdb are grouped for superposition/RMSD calculation.
+	  Closest match to reference in data set saved to 'best_match.pdb', with some info in REMARK lines.
+	  ALL atom data is written in 'best_match.pdb', not just the atoms used in the superposition/RMSD calculation.
+	MolecularUtilities $ 
 
 ## <a name="Centroids"></a> Centroids
 
-Extract the centroid "pseudoparticles" from a set of PDB input structures.
+Extract the centroid "pseudoparticles" (i.e. the averaged position of each specified particle) from a set of PDB input structures.
+
+This functionality is useful to generate the average location of particles whose locations fluctuate. It can be combined with the [BestStructuralMatch](#BestStructuralMatch) program to generate the "average" structure of a molecule given a set of similar natural conformations, and then extracting which of the input conformations is the closest match to this "average" structure.
+
+Running the program with no command line options revelas a brief user guide:
+
+	MolecularUtilities $ bin/Centroids 
+	Usage: bin/Centroids input.pdb set_size
+	Where:
+	  - set_size : number of consecutive PDB molecules in the input file to group
+	MolecularUtilities $ 
+
+As shown in the output information above, the user may specify a `set_size` parameter to indicate how many consecutive entries in the PDB file are treated as a single "molecule" (with entries delineated by `TER` lines). This parameter is typically `1`.
+
 
 ## <a name="Distances"></a> Distances
 
 Measure statistics regarding the distances between PDB atoms in multiple data sets.
 
+This functionality can be useful when estimating effective particle volumes in a coarse-grained model using fine-grained structural data, and therefore for initial estimates for force field parameters etc.
+
+Running the program with no command line options revelas a brief user guide:
+
+	MolecularUtilities $ bin/Distances
+	Usage: bin/Distances input=name:filepath.pdb[:min_samples[:set_size]] input=name:filepath.pdb ... rcut=X [filters="filter_string;filter_string;..."] [same="name:resSeq,name:resSeq;name:resSeq,name:resSeq;..."] [histogram_prefix=X] [histogram_res=X]
+	Where:
+	  input : define an input PDB:
+	    -name : name for input set.
+	    -min_samples : OPTIONAL minimum number of samples required to print distances (default = 1).
+	    -set_size : OPTIONAL only measure over consecutive 'set_size' mol groups (useful for structures superposed onto common reference frame, default = all in file).
+	  filters : PDB-style filtering.
+	  same : OPTIONAL definition of atoms to consider the same, to generate/prints additional distance info.
+	  histogram_prefix : OPTIONAL prefix for saved histograms of distances; if not specified, no histograms written.
+	  histogram_res : OPTIONAL resolution (bins per unit distance) for histograms (ignored if histogram_prefix not defined).
+	Examples:
+	  bin/Distances input=test:blah.pdb:4 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
+	  bin/Distances input=test1:blah1.pdb:4 input=test2:blah2.pdb:4:2 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
+	MolecularUtilities $ 
+
+
 ## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
 
 Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
+Running the program with no command line options revelas a brief user guide:
+
+	MolecularUtilities $ bin/Distances
+	MolecularUtilities $ 
+
+
 ## <a name="FluctuationSpectrum2"></a> FluctuationSpectrum2
 
 Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS config class)
+
+Running the program with no command line options revelas a brief user guide:
+
+	MolecularUtilities $ bin/Distances
+	MolecularUtilities $ 
+
 
 ## <a name="GenerateMembranes"></a> GenerateMembranes
 
