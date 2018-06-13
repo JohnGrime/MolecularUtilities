@@ -19,7 +19,7 @@ This guide assumes basic familiarity with the [PDB file format](https://www.rcsb
 
 ## <a name="AxisAlign"></a> AxisAlign
 
-This program will align the molecular axes of a PDB structure to the specified Cartesian axes, with the option to use only a filtred subset of the particles in the calculation of the molecular axes.
+_Align the molecular axes of a PDB structure to the specified Cartesian axes, with the option to use only a filtred subset of the particles in the calculation of the molecular axes._
 
 This functionality is useful for visualization, and aligned molecules are useful for e.g. building up complicated molecular systems with specific initial conditions.
 
@@ -240,7 +240,9 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="FluctuationSpectrum2"></a> FluctuationSpectrum2
 
-This program is functionally identical to [FluctuationSpectrum](#FluctuationSpectrum), but instead of using the specialized LAMMPS file handling code it uses a more general representation of atoms and molecules etc. This in principle allows the straightforward addition of atomic filtering and support for other file formats etc, but it' also slightly slower and requires more memory. I've therefore included these two programs as separate entries for now.
+This program is functionally identical to [FluctuationSpectrum](#FluctuationSpectrum), but instead of using the specialized LAMMPS file handling code it uses a more general representation of atoms and molecules etc. This in principle allows the straightforward addition of atomic filtering and support for other file formats etc, but it's also slightly slower and requires more memory.
+
+I've therefore included these two programs as separate entries for now.
 
 
 ## <a name="GenerateMembranes"></a> GenerateMembranes
