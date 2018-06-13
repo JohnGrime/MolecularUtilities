@@ -80,7 +80,7 @@ Running the program with no command line options reveals a brief user guide:
 	  ALL atom data is written in 'best_match.pdb', not just the atoms used in the superposition/RMSD calculation.
 	MolecularUtilities $ 
 
-*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different. Let's see how different they are:
+*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. Let's see how different they are:
 
 	MolecularUtilities $ bin/BestStructuralMatch PDB_sources/3P05.pdb 1 PDB_sources/3P05.pdb name=CA resSeq=1-145
 	Set     1 : 136 common filtered atoms : RMSD        0.000 =>        0.000 <- best so far
@@ -93,7 +93,7 @@ Running the program with no command line options reveals a brief user guide:
 
 Here we specify to only use atoms with name `CA` for the comparison, and only use atoms from residues numbered 1 to 145 (these form the "head" of each protein).
 
-Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
+The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD fro the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
 
 ## <a name="Centroids"></a> Centroids
 
@@ -135,6 +135,67 @@ Running the program with no command line options reveals a brief user guide:
 	  bin/Distances input=test:blah.pdb:4 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
 	  bin/Distances input=test1:blah1.pdb:4 input=test2:blah2.pdb:4:2 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
 	MolecularUtilities $ 
+
+*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein:
+
+	MolecularUtilities $ bin/Distances input=test:PDB_sources/3P05.pdb rcut=10 filters="name:CA;resSeq:1-20"
+	Inputs:
+		 'input=test:PDB_sources/3P05.pdb'
+	Parameters:
+		 'filters' => 'name:CA;resSeq:1-20'
+		 'rcut' => '10'
+
+	*
+	* 'test' : 'PDB_sources/3P05.pdb', min_samples 1, set_size <unspecified, using all molecules in file>
+	*
+
+	Read 5 molecules.
+	79 atoms total passed filtering.
+	Adjusting set_size from -1 to 5 (number of filtered molecules)
+
+	  name_i name_j :      min     mean      max   stddev   stderr (   N) Ascending list of distances ...
+	      CA:3 CA:6 :    8.804    8.804    8.804    0.000    0.000 (   1)    8.804 
+	     CA:3 CA:13 :    8.431    8.431    8.431    0.000    0.000 (   1)    8.431 
+	     CA:3 CA:14 :    8.310    8.310    8.310    0.000    0.000 (   1)    8.310 
+	      CA:4 CA:6 :    8.362    8.362    8.362    0.000    0.000 (   1)    8.362 
+	      CA:4 CA:7 :    9.797    9.797    9.797    0.000    0.000 (   1)    9.797 
+	     CA:4 CA:11 :    9.215    9.215    9.215    0.000    0.000 (   1)    9.215 
+	     CA:4 CA:12 :    8.097    8.097    8.097    0.000    0.000 (   1)    8.097 
+	     CA:4 CA:13 :    7.238    8.555    9.872    1.862    1.317 (   2)    7.238    9.872 
+	     CA:4 CA:14 :    8.726    8.726    8.726    0.000    0.000 (   1)    8.726 
+	      CA:5 CA:5 :    9.639    9.639    9.639    0.000    0.000 (   1)    9.639 
+	      CA:5 CA:6 :    5.844    5.844    5.844    0.000    0.000 (   1)    5.844 
+	      CA:5 CA:7 :    6.943    6.943    6.943    0.000    0.000 (   1)    6.943 
+	      CA:5 CA:8 :    9.221    9.221    9.221    0.000    0.000 (   1)    9.221 
+	     CA:5 CA:11 :    8.944    8.944    8.944    0.000    0.000 (   1)    8.944 
+	     CA:5 CA:12 :    9.050    9.050    9.050    0.000    0.000 (   1)    9.050 
+	     CA:5 CA:13 :    8.007    8.007    8.007    0.000    0.000 (   1)    8.007 
+	      CA:6 CA:9 :    9.417    9.417    9.417    0.000    0.000 (   1)    9.417 
+	     CA:6 CA:10 :    9.228    9.228    9.228    0.000    0.000 (   1)    9.228 
+	     CA:6 CA:11 :    6.671    6.671    6.671    0.000    0.000 (   1)    6.671 
+	     CA:6 CA:12 :    8.042    8.042    8.042    0.000    0.000 (   1)    8.042 
+	     CA:6 CA:13 :    7.742    7.742    7.742    0.000    0.000 (   1)    7.742 
+	      CA:7 CA:9 :    8.772    8.772    8.772    0.000    0.000 (   1)    8.772 
+	     CA:7 CA:10 :    9.572    9.572    9.572    0.000    0.000 (   1)    9.572 
+	     CA:7 CA:11 :    7.564    7.564    7.564    0.000    0.000 (   1)    7.564 
+	     CA:7 CA:12 :    9.784    9.784    9.784    0.000    0.000 (   1)    9.784 
+	      CA:8 CA:9 :    9.932    9.932    9.932    0.000    0.000 (   1)    9.932 
+	     CA:8 CA:10 :    9.488    9.488    9.488    0.000    0.000 (   1)    9.488 
+	     CA:8 CA:11 :    6.587    6.587    6.587    0.000    0.000 (   1)    6.587 
+	     CA:8 CA:12 :    7.798    7.798    7.798    0.000    0.000 (   1)    7.798 
+	     CA:8 CA:13 :    9.048    9.048    9.048    0.000    0.000 (   1)    9.048 
+	    CA:16 CA:17 :    9.317    9.520    9.820    0.207    0.092 (   5)    9.317    9.332    9.556    9.575    9.820 
+	    CA:16 CA:18 :    9.289    9.502    9.852    0.269    0.134 (   4)    9.289    9.295    9.573    9.852 
+	    CA:16 CA:19 :    8.430    8.657    8.890    0.203    0.091 (   5)    8.430    8.468    8.693    8.805    8.890 
+	    CA:17 CA:17 :    9.829    9.913    9.997    0.119    0.084 (   2)    9.829    9.997 
+	    CA:17 CA:18 :    6.530    6.871    7.129    0.260    0.116 (   5)    6.530    6.679    6.933    7.086    7.129 
+	    CA:17 CA:19 :    5.464    5.618    5.739    0.113    0.051 (   5)    5.464    5.582    5.585    5.720    5.739 
+	    CA:17 CA:20 :    9.035    9.175    9.352    0.137    0.061 (   5)    9.035    9.039    9.219    9.231    9.352 
+	    CA:18 CA:18 :    6.592    6.747    7.021    0.173    0.077 (   5)    6.592    6.652    6.661    6.810    7.021 
+	    CA:18 CA:19 :    7.220    7.527    7.767    0.245    0.109 (   5)    7.220    7.312    7.644    7.693    7.767 
+	    CA:19 CA:20 :    9.745    9.822    9.989    0.114    0.057 (   4)    9.745    9.751    9.802    9.989 
+
+Here we only examine distances from a single input set (`3P05`), but you can actually pass in multiple files and see a side-by-side comparison of the distance data to look for any interesting differences.
 
 
 ## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
