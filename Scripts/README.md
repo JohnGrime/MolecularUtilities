@@ -34,16 +34,16 @@ This script performs a wide range of useful operations on PDB data piped in over
 
 ![Figure 1a](../Images/PDBTool_1a.png)
 
-**Example 1**: _Extract chain A and C from the 3P05 structure, redirecting the output to the file `test.pdb`_:
+**Example 1**: _Extract chains A and C from the 3P05 structure, redirecting the output to the file `test.pdb`_:
 
 	Scripts $ cat ../PDB_sources/3P05.pdb | ./PDBTool.py filter chainID=A,C > test.pdb
 	Scripts $
 
-The results of this operation are shown in **Fig. 1b**, where we observe that only two of the five original chains remain (the original 3P05 structure is shown in the background for comparison).
+The results of this operation are shown in **Fig. 1b**, where we observe that only two of the five original chains remain (the original 3P05 structure is shown faded in the background for comparison).
 
 ![Figure 1b](../Images/PDBTool_1b.png)
 
-Note that although chains can be filtered in this manner, this approach will likely result in spurious `TER` lines in the output because _empty molecules are returned from the filter where no atoms match._ If this is a problem, one can instead use the `extract_chains` command to achieve the same results without spurious `TER` lines:
+Note that although chains can be filtered in this manner, this approach will likely result in spurious `TER` lines in the output because _empty molecules are returned where no atoms in a molecule pass the filter._ If this is a problem, one can instead use the `extract_chains` command to achieve the same results without spurious `TER` lines:
 
 	Scripts $ cat ../PDB_sources/3P05.pdb | ./PDBTool.py extract_chains A C > test.pdb
 	Scripts $
