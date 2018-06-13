@@ -308,7 +308,17 @@ This functionality can be useful when you wish to visualize LAMMPS data, but the
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ bin/LammpsToXYZ
+
+	Convert LAMMPS coordinate files into simple xyz format.
+
+	Usage: bin/LAMMPSToXYZ  type  in_path  [out=path] [has_q]
+
+	Where:
+
+	  type : either 'data' or 'traj'
+	  has_q : optional switch to assume data files contain charges
+
 	MolecularUtilities $ 
 
 
@@ -320,7 +330,23 @@ This functionality can be useful when visualizing spherical bounding surfaces, o
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ bin/SphereArbitrary
+
+	Usage:
+
+	bin/SphereArbitrary  <radius> <target_N>  <aname> <rname> [TER]
+
+	Where:
+	  - aname : atom name for the surface beads
+	  - rname : residue name for the surface beads
+	  - TER   : OPTIONAL flag to insert TER lines after every ATOM
+
+	Example:
+
+	 bin/SphereArbitrary  100.0  350  PNT  SPH > my_sphere.pdb
+
+	Note that the number of points may not actually be target_N; it should be close, though!
+
 	MolecularUtilities $ 
 
 
@@ -332,7 +358,13 @@ This functionality can be useful when you require more regularity in the point s
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ bin/SphereBySubdivision
+
+	Usage: bin/SphereBySubdivision  <radius> <n_subdiv>  <aname> <rname>
+	Where:
+	  - aname : atom name for the surface beads
+	  - rname : residue name for the surface beads
+
 	MolecularUtilities $ 
 
 
@@ -344,7 +376,65 @@ This functionality can be useful when converting between coarse-grained (CG) and
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ bin/Superpose
+
+	Usage:
+
+		 bin/Superpose -target=a.pdb[:set_size][:noadvance] -structures=b.pdb[:set_size][:noadvance] -output=c.pdb [ -print_rmsd=yes|no ] [superpose=i,j,...:onto=k,l,...:apply_to=m,n,...:attr1=val1,val2,...:attr2=val1,val2,...] ...
+
+	Where:
+
+		 -target: input PDB with molecules to superpose ONTO
+		 -structures: input PDB with molecule to superpose ONTO those in "target"
+		 -output: results file
+		 -print_rmsd: print the before and after RMSD of superpositions
+
+	And one or more superposition entries, with parameters (separated by colon, ':'):
+
+		 superpose: molecule indices into current "structures" set, UNIT BASED
+		 onto: molecule indices into current "target" set, UNIT BASED
+		 apply_to: molecule indices into current "structures" set, UNIT BASED
+		 key=values: restrictions on the atoms used in the superposition. For PDB files, these keys are the
+		             PDB ATOM attributes such as "name", "resName", "resSeq" etc (see PDB file format).
+
+	Notes:
+
+		 The optional 'set_size' and 'noadvance' parameters control how the contents of input files are considered.
+		 Groups of 'set_size' molecules are read in at a time, and it is on these sets that the superpositions act.
+		 The default 'set_size' is 1, and by default 'noadvance' is set for 'target' and 'structures' This results in
+		 consective sets from 'structures' being superposed onto consective sets from 'target'. Most of the time, you
+		 may wish to superpose only the first set of 'structures' onto all sets in 'target', which is specified as so:
+
+		 -target=a.pdb:1 -structures=b.pdb:1:noadvance
+
+		 Where ranges of values are provided in the values for superposition entries, using the dash character '-',
+		 the range is expanded into an INCLUSIVE set of indices. Checks are performed to ensure that the ranges
+		 are integers and that the start index is <= end index.
+
+		 Where values are provided for the keys in the superposition, the set of atoms to use for the superposition
+		 must have attributes in the list provided; where two atoms have attributes in the list specified, but the
+		 attributes are not identical for both atoms, those atoms are ignored.
+
+		 An empty value list for a particular key denotes that the named attribute must be the same for two atoms to be
+		 included in those atoms used for the superposition calculation. any attributes not specified in the superposition
+		 definition are simply ignored.
+
+	Examples:
+
+		 bin/Superpose -target=tgt.pdb -structures=str.pdb:4:noadvance -output=out.pdb superpose=1,2:onto=1:apply_to=3,4:name=:resName=:resSeq=12-34
+
+		 calculate superposition of molecules 1 and 2 (combined into single molecule) of str.pdb onto each sequential
+		 molecule of tgt.pdb where the atom names and residue names match, and the residue sequences are in the range of
+		 12 to 34 (inclusive). This superposition transform is applied to molecules 3 and 4 of str.pdb and the results
+		 saved into out.pdb. We specify a set size of 4 for str.pdb, and prevent advancing beyond the first set.
+
+		 bin/Superpose -target=tgt.pdb:4 -structures=str.pdb:5:noadvance -output=out.pdb superpose=1,2:onto=1,2:apply_to=3,4,5:name=CA,CB:resName=:resSeq=
+
+		 calculate superposition of molecules 1 and 2 (combined into single molecule) of the first set of 5 consective molecules in str.pdb
+		 onto the combined molecule formed from entries 1 and 2 in each set of tgt.pdb (with tgt.pdb processed using sets of 4 consecutive molecules).
+		 The atom names are one of either "CA" or "CB" but must be the same for the paired atoms used in the superposition. The residue
+		 names and sequence numbers must match, and the results are saved into out.pdb.
+
 	MolecularUtilities $ 
 
 
@@ -356,5 +446,10 @@ This functionality can be useful when visualizing molecular systems to ensure th
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ bin/UnwrapTrajectory
+
+	Unwrap molecules in a LAMMPS trajectory, so that they are not split across periodic boundaries.
+
+	bin/UnwrapTrajectory <in_traj> <out_traj>
+
 	MolecularUtilities $ 
