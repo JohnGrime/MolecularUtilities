@@ -260,25 +260,106 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/GenerateMembranes
 
-	Usage: bin/GenerateMembranes [bond_length=X] [leaflet_separation=X] [lipid=t1,t1,...[:b1,b2,...][:a1,a2,...], ...] [sphere=monolayer|bilayer:MOLSTRING:outer_r:APL, ...] [plane=bilayer|monolayer:MOLSTRING:N:APL, ...]
+	Usage: bin/GenerateMembranes [bond_length=X] [leaflet_separation=X] [lipid=t1,t1,...[:b1,b2,...][:a1,a2,...], ...] [sphere=monolayer|bilayer:COMPOSITION:outer_r:APL, ...] [plane=bilayer|monolayer:COMPOSITION:N:APL, ...]
 
 	Where:
 
-	MOLSTRING : comma-separated lists of lipid types and relative proportions, separated by question mark.
+	bond_length: OPTIONAL default separation between bound particles (default: 7.5 Angstrom)
+	leaflet_separation: OPTIONAL separation between inner and outer monolayere leaflets in a bilayer (default: 7.5 Angstrom)
+
+	lipid: lists of particle types defining a lipid molecule, followed by optional lists of bond and angle types (default bond and angle type: 1)
+	sphere: define a spherical mono- or bilayer of the specified lipid composition, radius, and area per lipid
+	plane: define a planar mono- or bilayer of the specified lipid composition, NxN lipid grid, and area per lipid
+
+	COMPOSITION : comma-separated lists of lipid types and their relative proportions, separated by question mark.
 
 	Examples:
 
-	bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
-	bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
-	bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
+	1. bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
+
+	- Define a 3-site lipid (atom types 1,2,3), referred to in future as lipid type 1.
+	- Create a spherical bilayer (using lipid type 1) of radius 100 Angstrom and area per lipid 70 Angstrom**2.
+
+	2. bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
+
+	- Specify a default bond length connecting particles of length 7.5 Angstrom.
+	- Specify a default separation of 7.5 Angstroms between monolayer leaflets.
+	- Define TWO lipid types:
+	    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+	    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+	- Create a spherical bilayer with the following properties:
+	    - Use lipid types 1 and 2 to create a 1:1 ratio of lipids in the bilayer.
+	    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
+
+	3. bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
+
+	- Define TWO lipid types:
+	    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+	    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+	- Create a spherical bilayer with the following properties:
+	    - Use lipid types 1 and 2 to create a 10:12 ratio of lipids in the bilayer.
+	    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
 
 	Notes:
 
-	Molecule types are UNIT BASED and correspond to the order in which lipid definitions occurred.
+	Lipid types are UNIT BASED and correspond to the order in which lipid definitions occurred.
 	Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
 	If molecule proportions omitted, equal proportions used.
 
 	MolecularUtilities $ 
+
+**Example**: Imagine we require the starting configuration for simulations of a small 2-component bilayer vesicle system, with the vesicle membrane composed of a random mixture of coarse-grained (CG) lipid molecules at a ratio of 2:3. If we assume that the CG lipids have chemically similar hydrocarbon "tail" beads, and differ only in their hydrophilic "head" regions, one such system might be generated as follows:
+
+	MolecularUtilities $ bin/GenerateMembranes lipid=1,2,2 lipid=3,2,2 sphere=bilayer:1,2?2,3:100:70
+
+	*
+	* Input parameters
+	*
+
+	Molecule:
+	  atom types: 1 2 2 
+	  bonds: [1,1,2] [1,2,3] 
+	  angles: [1,1,2,3] 
+	  coords:
+	    0 0 0
+	    0 0 7.5
+	    0 0 15
+	Molecule:
+	  atom types: 3 2 2 
+	  bonds: [1,1,2] [1,2,3] 
+	  angles: [1,1,2,3] 
+	  coords:
+	    0 0 0
+	    0 0 7.5
+	    0 0 15
+
+	Sphere defined:
+	  type: bilayer
+	  mol types/props:
+	    1 0.4
+	    2 0.6
+	  outer_r: 100
+	  target APL: 70
+
+	bond_length = 7.5
+	leaflet_separation = 7.5
+
+	MolecularUtilities $ 
+
+Here, we defined two lipid types with a different "head" bead type, but both have two identical hydrocarbon "tail" beads. The resultant output configuration is shown below, as both a "full" view of the system and a "cut-away" view to better see the bilayer structure.
+
+![A two-component CG spherical bilayer](../Images/GM_1.png)
+![Cut-away view of a two-component CG spherical bilayer](../Images/GM_2.png)
+
+
+*
+* Generating surfaces
+*
+
+Sphere.
+  Outer leaflet : radius 100, 1539 lipids, VPL = 1050.26, APL 81.6528
+  Inner leaflet : radius 62.5, 883 lipids, VPL = 1050.01, APL 55.5916
+
 
 
 ## <a name="LammpsCombiner"></a> LammpsCombiner
