@@ -54,18 +54,18 @@ Running the program with no command line options revelas a brief user guide:
 
 	 bin/AxisAlign PDB_sources/2ymk.B.pdb y x z "name=CA"
 
-Here, we define a filter such that only the atoms with the name `CA` (i.e., carbon alpha atoms) are used to calculate the molecular axes. The results are shown below, where the initial structure is rendered in green and the aligned structure is in red. At the lower left of the image can be seen a set of axis indicators, where Cartesian x-, y- and z-axes are shown using red, green, and blue arrows respectively.
+Here, we define a filter such that only the atoms with the name `CA` (i.e., carbon alpha atoms) are used to calculate the molecular axes. The results are shown below, where the initial structure is rendered in red and the aligned structure is in green. At the lower left of the image can be seen a set of axis indicators, where Cartesian x-, y- and z-axes are shown using red, green, and blue arrows respectively.
 
 ![aligned structure](../Images/AA_1.png)
 
 
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure.
+This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure after superposing the two structures onto one another such that RMSD is minimized as much as possible.
 
 This functionality is useful to identify one or more "typical" conformations of a molecule, given an ensemble of structures.
 
-Running the program with no command line options revelas a brief user guide:
+Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/BestStructuralMatch 
 	Usage: bin/BestStructuralMatch reference.pdb set_size data.pdb [filter_name=v1,v2,...] [filter_name=v1,v2,...]
@@ -80,13 +80,28 @@ Running the program with no command line options revelas a brief user guide:
 	  ALL atom data is written in 'best_match.pdb', not just the atoms used in the superposition/RMSD calculation.
 	MolecularUtilities $ 
 
+*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different. Let's see how different they are:
+
+	MolecularUtilities $ bin/BestStructuralMatch PDB_sources/3P05.pdb 1 PDB_sources/3P05.pdb name=CA resSeq=1-145
+	Set     1 : 136 common filtered atoms : RMSD        0.000 =>        0.000 <- best so far
+	Set     2 : 126 common filtered atoms : RMSD       29.868 =>        0.209
+	Set     3 : 126 common filtered atoms : RMSD       48.329 =>        0.159
+	Set     4 : 126 common filtered atoms : RMSD       48.516 =>        0.192
+	Set     5 : 125 common filtered atoms : RMSD       29.813 =>        0.164
+	Unable to load 1 structures from 'PDB_sources/3P05.pdb'; only managed 0! Assuming EOF and stopping here.
+	MolecularUtilities $
+
+Here we specify to only use atoms with name `CA` for the comparison, and only use atoms from residues numbered 1 to 145 (these form the "head" of each protein).
+
+Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
+
 ## <a name="Centroids"></a> Centroids
 
 Extract the centroid "pseudoparticles" (i.e. the averaged position of each specified particle) from a set of PDB input structures.
 
 This functionality is useful to generate the average location of particles whose locations fluctuate. It can be combined with the [BestStructuralMatch](#BestStructuralMatch) program to generate the "average" structure of a molecule given a set of similar natural conformations, and then extracting which of the input conformations is the closest match to this "average" structure.
 
-Running the program with no command line options revelas a brief user guide:
+Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Centroids 
 	Usage: bin/Centroids input.pdb set_size
@@ -103,7 +118,7 @@ Measure statistics regarding the distances between PDB atoms in multiple data se
 
 This functionality can be useful when estimating effective particle volumes in a coarse-grained model using fine-grained structural data, and therefore for initial estimates for force field parameters etc.
 
-Running the program with no command line options revelas a brief user guide:
+Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Distances
 	Usage: bin/Distances input=name:filepath.pdb[:min_samples[:set_size]] input=name:filepath.pdb ... rcut=X [filters="filter_string;filter_string;..."] [same="name:resSeq,name:resSeq;name:resSeq,name:resSeq;..."] [histogram_prefix=X] [histogram_res=X]
@@ -126,7 +141,7 @@ Running the program with no command line options revelas a brief user guide:
 
 Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS trajectory frame class)
 
-Running the program with no command line options revelas a brief user guide:
+Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Distances
 	MolecularUtilities $ 
@@ -136,7 +151,7 @@ Running the program with no command line options revelas a brief user guide:
 
 Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS config class)
 
-Running the program with no command line options revelas a brief user guide:
+Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Distances
 	MolecularUtilities $ 
