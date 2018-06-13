@@ -61,7 +61,7 @@ Here, we define a filter such that only the atoms with the name `CA` (i.e., carb
 
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure after superposing the two structures onto one another such that RMSD is minimized as much as possible.
+_This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure after superposing the two structures onto one another such that RMSD is minimized as much as possible._
 
 This functionality is useful to identify one or more "typical" conformations of a molecule, given an ensemble of structures.
 
@@ -95,9 +95,10 @@ Here we specify to only use atoms with name `CA` for the comparison, and only us
 
 The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD fro the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
 
+
 ## <a name="Centroids"></a> Centroids
 
-Extract the centroid "pseudoparticles" (i.e. the averaged position of each specified particle) from a set of PDB input structures.
+_Extract the centroid "pseudoparticles" (i.e. the averaged position of each specified particle) from a set of PDB input structures._
 
 This functionality is useful to generate the average location of particles whose locations fluctuate. It can be combined with the [BestStructuralMatch](#BestStructuralMatch) program to generate the "average" structure of a molecule given a set of similar natural conformations, and then extracting which of the input conformations is the closest match to this "average" structure.
 
@@ -114,7 +115,7 @@ As shown in the output information above, the user may specify a `set_size` para
 
 ## <a name="Distances"></a> Distances
 
-Measure statistics regarding the distances between PDB atoms in multiple data sets.
+_Measure statistics regarding the distances between PDB atoms in multiple data sets._
 
 This functionality can be useful when estimating effective particle volumes in a coarse-grained model using fine-grained structural data, and therefore for initial estimates for force field parameters etc.
 
@@ -200,7 +201,7 @@ Here we only examine distances from a single input set (`3P05`), but you can act
 
 ## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
 
-Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using specialized LAMMPS file handling code).
+_Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using specialized LAMMPS file handling code)._
 
 This functionality can be useful in determining certain physical properties of a membrane system, for example the compressibility modulus or the bending modulus.
 
@@ -247,7 +248,7 @@ I've therefore included these two programs as separate entries for now.
 
 ## <a name="GenerateMembranes"></a> GenerateMembranes
 
-Create monolayer and/or bilayer systems using user-defined lipid molecules and surface geometries.
+_Create monolayer and/or bilayer systems using user-defined lipid molecules and surface geometries._
 
 This functionality can be useful when creating the initial system configuration for simulations of biological monolayer and bilayer interfaces.
 
@@ -278,7 +279,7 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="LammpsCombiner"></a> LammpsCombiner
 
-Combine LAMMPS config files, automatically renumbering bonds and angles etc.
+_Combine LAMMPS config files, automatically renumbering bonds and angles etc._
 
 This functionality can be useful when you wish to combine separate LAMMPS config files to produce a cohesive configuration for simulation, ensuring all the atoms, molecules, bonds, angles, etc are correctly numbered and consistent.
 
@@ -301,7 +302,7 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="LammpsToXYZ"></a> LammpsToXYZ
 
-Read in a LAMMPS configuration or trajectory file, and write out a file in the simpler [XYZ](https://en.wikipedia.org/wiki/XYZ_file_format) format.
+_Read in a LAMMPS configuration or trajectory file, and write out a file in the simpler [XYZ](https://en.wikipedia.org/wiki/XYZ_file_format) format._
 
 This functionality can be useful when you wish to visualize LAMMPS data, but the specific data file is either not commonly supported by visualization codes (e.g. LAMMPS configuration files) or you wish to reduce file sie and complexity for performance reasons (e.g. LAMMPS trajectory files).
 
@@ -313,9 +314,9 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="SphereArbitrary"></a> SphereArbitrary
 
-Generate a sphere using an arbitrary number of surface points
+_Generate an arbitrary number of roughly equispaced points on the surface of a sphere._
 
-This functionality can be useful when ...
+This functionality can be useful when visualizing spherical bounding surfaces, or constructing simulation coordinates.
 
 Running the program with no command line options reveals a brief user guide:
 
@@ -325,9 +326,9 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="SphereBySubdivision"></a> SphereBySubdivision
 
-Generate a sphere using poyhedral subdivision (cna provide more regular spacing that `SphereArbitrary`)
+_Generate near-equidistant points on the surface of a sphere using poyhedral subdivision._
 
-This functionality can be useful when ...
+This functionality can be useful when you require more regularity in the point spacing vs [SphereArbitrary](#SphereArbitrary)
 
 Running the program with no command line options reveals a brief user guide:
 
@@ -337,9 +338,9 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="Superpose"></a> Superpose
 
-Superpose arbitrary sets of PDB structures using filtered atom sets
+_Superpose arbitrary sets of PDB structures onto one another, using filtered atom sets if desired._
 
-This functionality can be useful when ...
+This functionality can be useful when converting between coarse-grained (CG) and fine-grained (FG) representations of a molecular system (i.e. swapping all CG molecules for FG molecules, or vice versa). It is also useful where you wish to align sets of structures for visualization etc.
 
 Running the program with no command line options reveals a brief user guide:
 
@@ -349,9 +350,9 @@ Running the program with no command line options reveals a brief user guide:
 
 ## <a name="UnwrapTrajectory"></a> UnwrapTrajectory
 
-Unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
+_Unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries._
 
-This functionality can be useful when ...
+This functionality can be useful when visualizing molecular systems to ensure that molecules are contiguous in space, rather than seeing discontinuities in molecular structures due to coordinates being wrapped across [periodic boundary conditions](https://en.wikipedia.org/wiki/Periodic_boundary_conditions).
 
 Running the program with no command line options reveals a brief user guide:
 
