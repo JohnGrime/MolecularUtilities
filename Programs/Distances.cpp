@@ -49,9 +49,8 @@ class Params
 class HistogramGenerator
 {
 	public:
-		
-	typedef struct histogram_
-	{
+	
+	using Histogram = struct histogram_ {
 		size_t N_samples;
 		double min, max, delta;
 		std::vector<int> counts;
@@ -82,7 +81,7 @@ class HistogramGenerator
 			N_samples++;
 		}
 		
-	} Histogram;
+	};
 	
 	static void Make( const std::vector<double>& vals, double bins_per_unit, Histogram& h )
 	{
