@@ -136,7 +136,7 @@ Running the program with no command line options reveals a brief user guide:
 	  bin/Distances input=test1:blah1.pdb:4 input=test2:blah2.pdb:4:2 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
 	MolecularUtilities $ 
 
-*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein:
+*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein, ignoring any pairs further apart than 10 Angstrom (1 nanometer):
 
 	MolecularUtilities $ bin/Distances input=test:PDB_sources/3P05.pdb rcut=10 filters="name:CA;resSeq:1-20"
 	Inputs:
@@ -200,46 +200,158 @@ Here we only examine distances from a single input set (`3P05`), but you can act
 
 ## <a name="FluctuationSpectrum"></a> FluctuationSpectrum
 
-Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS trajectory frame class)
+Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using specialized LAMMPS file handling code).
+
+This functionality can be useful in determining certain physical properties of a membrane system, for example the compressibility modulus or the bending modulus.
 
 Running the program with no command line options reveals a brief user guide:
 
-	MolecularUtilities $ bin/Distances
+	MolecularUtilities $ bin/FluctuationSpectrum
+
+	Usage: bin/FluctuationSpectum  traj=path  max_k=X max_l=X  head_type=X[,X,...] tail_type=X[,X,...]  gx=X gy=X  [delta_q=X] [scale=X] [which=X] [histogram=X] [out_prefix=X] [filter=X] [remap=X]
+
+	Where:
+
+	 - max_k, max_l : max integer wave numbers on x and y axes respectively.
+	 - head_type, tail_type : LAMMPS atom types for head and terminal tail beads.
+	 - gx, gy  : grid cell counts on x and y axes for midplane calculations.
+
+	 - delta_q   : OPTIONAL resolution of output spectrum histogram (default: 0.05).
+	 - scale     : OPTIONAL scaling for input->output length units (default: 1.0).
+	 - which     : OPTIONAL setting for which monolayer: 'upper', 'lower', 'both', 'midplane' (default: 'both').
+	 - histogram : OPTIONAL per-type histogram bin width in OUTPUT length units (ignored where <= 0.0).
+	 - save_midplane : OPTIONAL flag to save the midplane coordinates as xyz (default: no midplane written).
+	 - out_prefix: OPTIONAL output spectrum file prefix (default: 'spectrum').
+	 - filter: OPTIONAL grid filter cell size, with contents of isolated cells ignored (default: no filtering).
+	 - remap: OPTIONAL remap specifier, with most populated cell (via specified type) used recentre/wrap data (default: no remapping).
+	 - start: OPTIONAL unit-based start frame in trajectory. Negative values ignored (default: -1).
+	 - stop: OPTIONAL unit-based stop frame in trajectory. Negative values ignored (default: -1).
+	 - save_raw: OPTIONAL flag to save raw (i.e. non-binned) spectral values. Negative values ignored (default: -1).
+
+	Notes:
+
+	Be careful if you use 'which=midplane', as the high frequency components of the spectrum (larger q values)
+	will be limited by the resolution of the midplane grid (as specified by 'gx' and 'gy' parameters).
+
+	The filtering assigns head group particles to a 3D grid with the specified size. Any cells with no neighbours
+	have their contents ignored.
 	MolecularUtilities $ 
 
 
 ## <a name="FluctuationSpectrum2"></a> FluctuationSpectrum2
 
-Generate the fluctuation spectra for a bilayer membrane from LAMMPS trajectories (using LAMMPS config class)
-
-Running the program with no command line options reveals a brief user guide:
-
-	MolecularUtilities $ bin/Distances
-	MolecularUtilities $ 
+This program is functionally identical to [FluctuationSpectrum](#FluctuationSpectrum), but instead of using the specialized LAMMPS file handling code it uses a more general representation of atoms and molecules etc. This in principle allows the straightforward addition of atomic filtering and support for other file formats etc, but it' also slightly slower and requires more memory. I've therefore included these two programs as separate entries for now.
 
 
 ## <a name="GenerateMembranes"></a> GenerateMembranes
 
 Create monolayer and/or bilayer systems using user-defined lipid molecules and surface geometries.
 
+This functionality can be useful when creating the initial system configuration for simulations of biological monolayer and bilayer interfaces.
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/GenerateMembranes
+
+	Usage: bin/GenerateMembranes [bond_length=X] [leaflet_separation=X] [lipid=t1,t1,...[:b1,b2,...][:a1,a2,...], ...] [sphere=monolayer|bilayer:MOLSTRING:outer_r:APL, ...] [plane=bilayer|monolayer:MOLSTRING:N:APL, ...]
+
+	Where:
+
+	MOLSTRING : comma-separated lists of lipid types and relative proportions, separated by question mark.
+
+	Examples:
+
+	bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
+	bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
+	bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
+
+	Notes:
+
+	Molecule types are UNIT BASED and correspond to the order in which lipid definitions occurred.
+	Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
+	If molecule proportions omitted, equal proportions used.
+
+	MolecularUtilities $ 
+
+
 ## <a name="LammpsCombiner"></a> LammpsCombiner
 
 Combine LAMMPS config files, automatically renumbering bonds and angles etc.
 
+This functionality can be useful when you wish to combine separate LAMMPS config files to produce a cohesive configuration for simulation, ensuring all the atoms, molecules, bonds, angles, etc are correctly numbered and consistent.
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/LammpsCombiner
+
+	Usage: bin/LAMMPSCombiner path:dx,dy,dz:adjust_topo_types path:dx,dy,dz:adjust_topo_types [check=X]
+
+	Where:
+
+	  path : LAMMPS config file
+	  dx,dy,dz : offsets to translate system
+	  adjust_topo_types : 1 where bond/angle types should be adjusted to follow previous data
+
+	  check : OPTIONAL max bond length for sanity check of final data
+
+	MolecularUtilities $ 
+
+
 ## <a name="LammpsToXYZ"></a> LammpsToXYZ
+
+Read in a LAMMPS configuration or trajectory file, and write out a file in the simpler [XYZ](https://en.wikipedia.org/wiki/XYZ_file_format) format.
+
+This functionality can be useful when you wish to visualize LAMMPS data, but the specific data file is either not commonly supported by visualization codes (e.g. LAMMPS configuration files) or you wish to reduce file sie and complexity for performance reasons (e.g. LAMMPS trajectory files).
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ 
+
 
 ## <a name="SphereArbitrary"></a> SphereArbitrary
 
 Generate a sphere using an arbitrary number of surface points
 
+This functionality can be useful when ...
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ 
+
+
 ## <a name="SphereBySubdivision"></a> SphereBySubdivision
 
 Generate a sphere using poyhedral subdivision (cna provide more regular spacing that `SphereArbitrary`)
+
+This functionality can be useful when ...
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ 
+
 
 ## <a name="Superpose"></a> Superpose
 
 Superpose arbitrary sets of PDB structures using filtered atom sets
 
+This functionality can be useful when ...
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ 
+
+
 ## <a name="UnwrapTrajectory"></a> UnwrapTrajectory
 
 Unwrap molecules in a LAMMPs trajectory so they are not broken across periodic boundaries
+
+This functionality can be useful when ...
+
+Running the program with no command line options reveals a brief user guide:
+
+	MolecularUtilities $ bin/FluctuationSpectrum2
+	MolecularUtilities $ 
