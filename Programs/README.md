@@ -23,7 +23,7 @@ The compiled molecular utilities are:
 
 ## <a name="AxisAlign"></a> AxisAlign
 
-_Align the molecular axes of a PDB structure to the specified Cartesian axes, with the option to use only a filtred subset of the particles in the calculation of the molecular axes._
+_Align the molecular axes of a PDB structure to the specified Cartesian axes, with the option to use only a filtered subset of the particles in the calculation of the molecular axes._
 
 This functionality is useful for visualization, and aligned molecules are useful for e.g. building up complicated molecular systems with specific initial conditions.
 
