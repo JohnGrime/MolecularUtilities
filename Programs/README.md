@@ -84,7 +84,7 @@ Running the program with no command line options reveals a brief user guide:
 	  ALL atom data is written in 'best_match.pdb', not just the atoms used in the superposition/RMSD calculation.
 	MolecularUtilities $ 
 
-*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. Let's see how different they are:
+**Example**: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. Let's see how different they are:
 
 	MolecularUtilities $ bin/BestStructuralMatch PDB_sources/3P05.pdb 1 PDB_sources/3P05.pdb name=CA resSeq=1-145
 	Set     1 : 136 common filtered atoms : RMSD        0.000 =>        0.000 <- best so far
@@ -141,7 +141,7 @@ Running the program with no command line options reveals a brief user guide:
 	  bin/Distances input=test1:blah1.pdb:4 input=test2:blah2.pdb:4:2 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
 	MolecularUtilities $ 
 
-*Example*: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein, ignoring any pairs further apart than 10 Angstrom (1 nanometer):
+**Example**: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein, ignoring any pairs further apart than 10 Angstrom (1 nanometer):
 
 	MolecularUtilities $ bin/Distances input=test:PDB_sources/3P05.pdb rcut=10 filters="name:CA;resSeq:1-20"
 	Inputs:
