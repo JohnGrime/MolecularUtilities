@@ -476,9 +476,10 @@ ntd_rcut = float(temp[4])
 # Load input PDB data
 #
 
+print ''
 print 'Loading data from "%s" ...' % ( input_PDB )
 dat = PDBData( input_PDB, subunits_per_monomer )
-print '\t %d subunits, %d monomers' % ( len(dat.subunits), len(dat.monomers) )
+print '  %d subunits, %d monomers' % ( len(dat.subunits), len(dat.monomers) )
 
 #
 # Build sets of filtered atoms for CTD/CTD and NTD/NTD interface detection
@@ -493,36 +494,40 @@ ntd_gi2 = dat.filter_atoms( {'name':[ntd_name2], 'resSeq':[ntd_resSeq2]} )
 # CTD/CTD dimer structures as paired monomers
 #
 
+print ''
 print 'Detecting CTD dimers ...'
 ctd_dr2_table = dat.dr2_table_as_monomers( ctd_gi1, ctd_gi2 )
 ctd_dimers = structure_identifier.get_dimers( ctd_dr2_table, ctd_rcut, symmetrical=True )
-print '\t %d CTD dimer pairs found.' % ( len(ctd_dimers) )
+print '  %d CTD dimer pairs found.' % ( len(ctd_dimers) )
 
 #
 # NTD/NTD dimer structures as paired monomers
 #
 
+print ''
 print 'Detecting NTD dimers ...'
 ntd_dr2_table = dat.dr2_table_as_monomers( ntd_gi1, ntd_gi2 )
 ntd_dimers = structure_identifier.get_dimers( ntd_dr2_table, ntd_rcut, symmetrical=False )
-print '\t %d NTD dimer pairs found.' % ( len(ntd_dimers) )
+print '  %d NTD dimer pairs found.' % ( len(ntd_dimers) )
 
 #
 # Cyclic NTD/NTD rings as sets of monomers
 #
 
+print ''
 print 'Detecting cyclic structures ...'
 ntd_rings = structure_identifier.get_cyclic( ntd_dr2_table, ntd_rcut )
 for key in ntd_rings:
-    print '\t %d rings of length %d' % ( len(ntd_rings[key]), key )
+    print '  %d rings of length %d' % ( len(ntd_rings[key]), key )
 
 #
 # Trimer-of-dimers as monomers - needs ntd_dr2 and ctd_dr2 tables from before.
 #
 
+print ''
 print 'Detecting trimer-of-dimers ...'
 trimers = structure_identifier.get_trimers( ntd_dr2_table, ntd_rcut, ctd_dr2_table, ctd_rcut )
-print '\t %d trimer-of-dimers found.' % ( len(trimers) )
+print '  %d trimer-of-dimers found.' % ( len(trimers) )
 
 #
 # Save structural mappings to file (subunit numbers denote zero-based indices into the original PDB file)
@@ -582,24 +587,26 @@ f.close()
 #
 # Save structures as PDB files, if they exist
 #
+print ''
+print 'Output'
 
 if len(ctd_dimers) > 0:
     fpath = '%s.ctd_dimers.pdb'%( output_prefix )
     save_structures( fpath, ctd_dimers, dat )
-    print '\t => %s' % ( fpath )
+    print '  => %s' % ( fpath )
 
 if len(ntd_dimers) > 0:
     fpath = '%s.ntd_dimers.pdb'%( output_prefix )
     save_structures( fpath, ntd_dimers, dat )
-    print '\t => %s' % ( fpath )
+    print '  => %s' % ( fpath )
 
 if len(trimers) > 0:
     fpath = '%s.trimers.pdb'%( output_prefix )
     save_structures( fpath, trimers, dat )
-    print '\t => %s' % ( fpath )
+    print '  => %s' % ( fpath )
 
 for key in ntd_rings:
     if len( ntd_rings[key]) > 0:
         fpath = '%s.rings.%d.pdb' % (output_prefix,key)
         save_structures( fpath, ntd_rings[key], dat )
-        print '\t => %s' % ( fpath )
+        print '  => %s' % ( fpath )

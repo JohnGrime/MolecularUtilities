@@ -137,21 +137,27 @@ To extract potentially interesting local structural information for further anal
 	Scripts $ ./IdentifyHIVStructures.py input=Briggs.pdb CTD=CA,180,20 NTD=CA,58,CA,38,20 output_prefix=out subunits_per_monomer=1
 
 	Loading data from "Briggs.pdb" ...
-		 35 subunits, 35 monomers
+	  35 subunits, 35 monomers
+
 	Detecting CTD dimers ...
-		 10 CTD dimer pairs found.
+	  10 CTD dimer pairs found.
+
 	Detecting NTD dimers ...
-		 35 NTD dimer pairs found.
+	  35 NTD dimer pairs found.
+
 	Detecting cyclic structures ...
-		 1 rings of length 5
-		 5 rings of length 6
+	  1 rings of length 5
+	  5 rings of length 6
+
 	Detecting trimer-of-dimers ...
-		 5 trimer-of-dimers found.
-		 => out.ctd_dimers.pdb
-		 => out.ntd_dimers.pdb
-		 => out.trimers.pdb
-		 => out.rings.5.pdb
-		 => out.rings.6.pdb
+	  5 trimer-of-dimers found.
+
+	Output
+	  => out.ctd_dimers.pdb
+	  => out.ntd_dimers.pdb
+	  => out.trimers.pdb
+	  => out.rings.5.pdb
+	  => out.rings.6.pdb
 
 	Scripts $
 
