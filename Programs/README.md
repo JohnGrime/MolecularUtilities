@@ -540,7 +540,7 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/UnwrapTrajectory in_traj out_traj
 
 	Where:
-		  - in_traj : input LAMMPS trajectory
-		  - out_traj : output LAMMPS trajectory
+	  - in_traj : input LAMMPS trajectory
+	  - out_traj : output LAMMPS trajectory
 
 	MolecularUtilities $ 

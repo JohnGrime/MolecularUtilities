@@ -28,8 +28,8 @@ int main( int argc, char** argv )
 		printf( "Usage: %s in_traj out_traj\n", argv[0] );
 		printf( "\n" );
 		printf( "Where:\n" );
-		printf( "\t  - in_traj : input LAMMPS trajectory\n" );
-		printf( "\t  - out_traj : output LAMMPS trajectory\n" );
+		printf( "  - in_traj : input LAMMPS trajectory\n" );
+		printf( "  - out_traj : output LAMMPS trajectory\n" );
 		printf( "\n" );
 		exit( -1 );
 	}
