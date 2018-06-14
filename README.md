@@ -10,7 +10,7 @@ A suite of tools to assist with molecular simulations and analysis.
 
 ## <a name="Introduction"></a> Introduction
 
-This software suite is intended to work with file formats from the Protein data bank ([PDB](https://www.rcsb.org/)) and the Large-scale Atomic/Molecular Massively Parallel Simulator ([LAMMPS](http://lammps.sandia.gov/), Sandia National Laboratories).
+This software suite is intended to work with file formats from the Protein data bank ([PDB](https://www.rcsb.org/), particularly the fields in an [ATOM](https://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM) entry) and the Large-scale Atomic/Molecular Massively Parallel Simulator ([LAMMPS](http://lammps.sandia.gov/), Sandia National Laboratories).
 
 All programs and scripts can be run without command line options for user instructions and example usage.
 

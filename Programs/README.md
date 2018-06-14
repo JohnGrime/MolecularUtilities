@@ -2,7 +2,7 @@
 
 I've tried to keep the programs as (potentially large) self-contained monolithic files rather than scattering large numbers of support files across this directory. Wherever sensible, I've broken out the modular re-usable elements into files in the `Util/` directory.
 
-This guide assumes basic familiarity with the [PDB file format](https://www.rcsb.org/), specifically the various data entries in [ATOM](https://en.wikipedia.org/wiki/Protein_Data_Bank_(file_format)) fields (which are typically used when defining filters for atomic data in the utilities etc).
+This guide assumes basic familiarity with the [PDB file format](https://www.rcsb.org/), specifically the various data fields in [ATOM](https://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM) entries (which are typically used when defining filters for atomic data in the utilities etc).
 
 The compiled molecular utilities are:
 
