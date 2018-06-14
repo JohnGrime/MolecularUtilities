@@ -19,7 +19,7 @@ All programs and scripts can be run without command line options for user instru
 ## <a name="Requirements"></a> Requirements
 
 * Compiler supporting [c++11](https://en.wikipedia.org/wiki/C%2B%2B11)
-* [Gnu make](https://www.gnu.org/software/make/)
+* [Gnu make](https://www.gnu.org/software/make/) (or compatible alternative)
 * [Python](https://www.python.org/) (for using the PDB utility script)
 
 ## <a name="Building"></a> Building the programs
