@@ -131,11 +131,11 @@ This script processes an input PDB file, and recursively identifies any examples
 
 	Scripts $
 
-**Example**: In **Fig. 1** wew see a PDB file from the research group of [John Briggs](https://www2.mrc-lmb.cam.ac.uk/groups/briggs/). This file contains an example region of mature HIV-1 capsid lattice, with a central pentameric protein ring surounded by a number of hexameric protein rings. Each individual protein is depicted in a different color, producing a rather chaotic scene. Note that we do not render loop regions of the protein, only clear alpha helices; nontheless, the image is rather complicated and confusing.
+**Example**: In **Fig. 3a** we see a PDB file from the research group of [John Briggs](https://www2.mrc-lmb.cam.ac.uk/groups/briggs/). This file contains an example region of mature HIV-1 capsid lattice, with a central pentameric protein ring surounded by a number of hexameric protein rings. Each individual protein is depicted in a different color, producing a rather chaotic scene. Note that we do not render loop regions of the protein, only alpha helices; nontheless, the image is rather complicated and confusing.
 
 ![Figure 3a](../Images/HIV_1a.png)
 
-To simplfy this structure, and extract potentially interesting local structural data, we can process the data using the `IdentifyHIVStructures.py` script, e.g.:
+To extract potentially interesting local structural information for further analysis, we can process the data using the `IdentifyHIVStructures.py` script, e.g.:
 
 	Scripts $ ./IdentifyHIVStructures.py input=Briggs.pdb CTD=CA,180,20 NTD=CA,58,CA,38,20 output_prefix=out subunits_per_monomer=1
 
@@ -158,22 +158,22 @@ To simplfy this structure, and extract potentially interesting local structural 
 
 	Scripts $
 
-We now have a set of PDB files containing the individual local structures detected in the data set. For example, by plotting the [pentameric ring](https://www.nature.com/articles/nature09640) (`out.rings.5.pdb`) with protein N-terminal domains in red and C-terminal domains in gray (with the full structure faded into the background for reference), we produce *Fig. 3b*.
+We now have a set of PDB files containing the individual local structures detected in the data set. For example, by plotting the [pentameric ring](https://www.nature.com/articles/nature09640) (`out.rings.5.pdb`) with protein N-terminal domains in red and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3b**.
 
 ![Figure 3b](../Images/HIV_1b.png)
 
-By plotting the [hexameric rings](https://www.nature.com/articles/nature09640) (`out.rings.6.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce *Fig. 3c*.
+By plotting the [hexameric rings](https://www.nature.com/articles/nature09640) (`out.rings.6.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3c**.
 
 ![Figure 3c](../Images/HIV_1c.png)
 
-By plotting the first entry in the [C-terminal domain dimers](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.ctd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce *Fig. 3d*.
+By plotting the first entry in the [C-terminal domain dimers](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.ctd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3d**.
 
 ![Figure 3d](../Images/HIV_1d.png)
 
-By plotting the first entry in the [N-terminal domain dimers](https://www.nature.com/articles/nature09640) (`out.ntd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce *Fig. 3e*.
+By plotting the first entry in the [N-terminal domain dimers](https://www.nature.com/articles/nature09640) (`out.ntd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3e**.
 
 ![Figure 3e](../Images/HIV_1e.png)
 
-Finally, by plotting the first entry in the [trimer-of-dimers structures](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.trimers.pdb`) with protein C-terminal domains in gray (N-terminal domains in differnet colors, with the full structure faded into the background for reference), we produce *Fig. 3f*.
+Finally, by plotting the first entry in the [trimer-of-dimers structures](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.trimers.pdb`) with protein C-terminal domains in gray (N-terminal domains in different colors, with the full structure faded into the background for reference), we produce **Fig. 3f**.
 
 ![Figure 3f](../Images/HIV_1f.png)

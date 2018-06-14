@@ -4,7 +4,7 @@
 #   Author: John Grime, The University of Chicago.
 #
 
-import sys, math
+import sys, math, PDB
 
 #
 # This script identifies and extracts structures from a PDB file continaing an HIV CA assembly.
@@ -23,104 +23,14 @@ import sys, math
 #
 
 
-
-#############################################################
-# First section of this file is just PDB file IO stuff.
-#############################################################
-
-
-
-#
-# The following dictionary is used to parse PDB atoms; 'start' and 'end' are
-# the UNIT BASED text column indices (as per the 'ATOM' definition in the RCSB),
-# and 'converter' is a function to convert the raw text string into something
-# more natural for that specific data.
-#
-PDB_atom_line_info = {
-    'type':       { 'start': 1, 'stop': 6, 'converter':str },
-    'serial':     { 'start': 7, 'stop':11, 'converter':int },
-    'serial':     { 'start': 7, 'stop':11, 'converter':lambda x: int(x,16) }, # for weird big PDBs with hex serial: use base 16.
-    'name':       { 'start':13, 'stop':16, 'converter':str },
-    'altLoc':     { 'start':17, 'stop':17, 'converter':str },
-    'resName':    { 'start':18, 'stop':20, 'converter':str },
-    'chainID':    { 'start':22, 'stop':22, 'converter':str },
-    'resSeq':     { 'start':23, 'stop':26, 'converter':int },
-    'iCode':      { 'start':27, 'stop':27, 'converter':str },
-    'x':          { 'start':31, 'stop':38, 'converter':float },
-    'y':          { 'start':39, 'stop':46, 'converter':float },
-    'z':          { 'start':47, 'stop':54, 'converter':float },
-    'occupancy':  { 'start':55, 'stop':60, 'converter':float },
-    'tempFactor': { 'start':61, 'stop':66, 'converter':float },
-    'element':    { 'start':77, 'stop':78, 'converter':str },
-    'charge':     { 'start':79, 'stop':80, 'converter':str }
-}
-
-#
-# Text line => PDB atom dictionary, assumes valid ATOM line passed in.
-#
-def parse_PDB_line( line, line_info ):
-    parsed = {}
-    for key in line_info.keys():
-        li = line_info[key]
-        converter, i, j = li['converter'], li['start']-1, li['stop']
-
-        if i >= len(line): continue
-        if j > len(line): j = len(line)
-
-        # special case; big PDB files from VMD can have serial=='*****' where > 5 digits
-        if (key=='serial') and (line[i] == '*'): parsed[key] = 1
-        else: parsed[key] = converter( line[i:j].strip() ) # remove leading/trailing whitespace before conversion
-    return parsed
-
-#
-# Revert atom data => PDB compatible text string
-#
-def make_PDB_line( atom ):
-    PDB_atom_line_format = '%-6.6s%5.5s %4.4s%1.1s%3.3s %1.1s%4.4s%1.1s   %8.3f%8.3f%8.3f%6.2f%6.2f          %2.2s%2.2s'
-    defaults = { 'occupancy':1.0, 'tempFactor':0.0, 'element':'', 'charge':'' }
-
-    # fill in common missing values with defaults, if needed
-    checked_values = {}
-    for key in defaults.keys():
-        checked_values[key] = defaults[key]
-        if key in atom:
-            checked_values[key] = atom[key]
-
-    return PDB_atom_line_format % (
-        atom['type'],
-        str(atom['serial']),
-        atom['name'],
-        atom['altLoc'],
-        atom['resName'],
-        atom['chainID'],
-        str(atom['resSeq']),
-        atom['iCode'],
-        atom['x'],
-        atom['y'],
-        atom['z'],
-        checked_values['occupancy'],
-        checked_values['tempFactor'],
-        checked_values['element'],
-        checked_values['charge'] )
-
-
-
-##############################################################################
-# Utility class to load PDB data, with different ways to reference the atoms.
-# The PDBData class also allows you to build distance tables, and look for 
-# connectivity between sets of atoms.
-##############################################################################
-
-
-
-#
-# Class to simplify mapping between atoms/subunits/monomers,
-# with some functionality to create filtered sets of atoms and distance tables.
-# This treatment allows several "subunits" to be considered as a single monomer,
-# so we can handle PDB files with eg the NTD and CTD as separate entries separated
-# by a TER line.
-#
 class PDBData:
+    """
+    Class to simplify mapping between atoms/subunits/monomers,
+    with some functionality to create filtered sets of atoms and distance tables.
+    This treatment allows several "subunits" to be considered as a single monomer,
+    so we can handle PDB files with eg the NTD and CTD as separate entries separated
+    by a TER line.
+    """
     
     def __init__( self, pdb_path, subunits_per_monomer ):
         # map of global atom id => [subunit_i,subunit_atom_i], and vice versa.
@@ -147,7 +57,8 @@ class PDBData:
         for line in f:
 
             if line[0:4] in valid_atom_prefixes:
-                line_data = parse_PDB_line( line, PDB_atom_line_info )
+#                line_data = parse_PDB_line( line, PDB_atom_line_info )
+                line_data = PDB.parse_line( line, PDB.PDB_atom_line_info )
 
                 # skip non-CA
                 if line_data['name'] != 'CA': continue
@@ -226,10 +137,10 @@ class PDBData:
     def subunit_to_monomer( self, si ): return self.s2monomer[si]
     def monomer_to_subunits( self, mi ): return self.monomers[mi]
 
-    #
-    # Return filtered subset of atoms as a list of global ids
-    #
     def filter_atoms( self, filters ):
+        """
+        Return filtered subset of atoms as a list of global ids
+        """
         filtered_atoms = []
         for gi in self.g2l:
             atom, add_me = self.global_to_atom( gi ), True
@@ -240,11 +151,11 @@ class PDBData:
             if add_me == True: filtered_atoms.append( gi )
         return filtered_atoms
 
-    #
-    # Table coords [i][j] are monomer indices, but i_gids and j_gids are
-    # lists of global atom indices.
-    #
     def dr2_table_as_monomers( self, i_gids, j_gids ):
+        """
+        Table coords [i][j] are monomer indices, but i_gids and j_gids are
+        lists of global atom indices.
+        """
         dr2 = [ [None for j in self.monomers] for i in self.monomers ]
         for i in range( 0, len(i_gids) ):
             si, ai = self.global_to_local( i_gids[i] )
@@ -267,15 +178,27 @@ class PDBData:
 ##############################################################################
 
 class HIVStructures:
+    """
+    Class to help identify key structures in HIV-1 mature capsid lattice data.
+    """
 
     def __init__( self ):
         pass
 
-    #
-    # Return CLOSEST paired entry for each index. pairs[i] == None if nothing < rcut from i
-    # NOTE - returns 2 copies of a pair if symmetrical (i->j and j->i), so be careful.
-    #
     def get_closest_pairs( self, dr2_table, rcut ):
+        """
+        Return CLOSEST paired entry for each molecule index.
+
+        Args:
+          dr2_table (2D matrix of distances): dr2_table[i][i] is the separation of molecules i and j
+          rcut (float): cutoff for pair detection
+
+        Returns:
+            pairs (list of integer pairs) : each pair describes a molecule and its closest neighbor. pairs[i] == None if nothing closer than rcut from molecule i
+
+        Notes:
+            returns 2 copies of a pair if symmetrical (i->j and j->i), so be careful.
+        """
         rcut2 = rcut*rcut
         pairs = {}
         for i in range( 0, len(dr2_table) ):
@@ -289,11 +212,21 @@ class HIVStructures:
             pairs[i] = closest
         return pairs
 
-    #
-    # Identify dimers via closest pairs in dr2_table.
-    # Returns list of [monomer_i, monomer_j] entries.
-    #
     def get_dimers( self, dr2_table, rcut, symmetrical ):
+        """
+        Identify dimers via closest pairs in dr2_table.
+
+        Args:
+          dr2_table (2D matrix of distances): dr2_table[i][i] is the separation of molecules i and j
+          rcut (float): cutoff for pair detection
+          symmetrical (bool): specify whether the direction matters (i.e., is i->j considered same as j->i)
+
+        Returns:
+            dimers (list of integer pairs) : each pair of molecule indices describes a dimer
+
+        Notes:
+            returns 2 copies of a pair if symmetrical (i->j and j->i), so be careful.
+        """
         dimers = []
         pairs = self.get_closest_pairs( dr2_table, rcut )
         for mi in pairs:
@@ -303,11 +236,18 @@ class HIVStructures:
             dimers.append( [mi,mj] )
         return dimers
 
-    #
-    # Recursive cyclic structure identifier; uses list not dictionary, so we preserve ring ordering.
-    # Returns map of cyclic structure length => list of structures of that length.
-    #
     def cyclic_recurse( self, pairs, upto, previous ):
+        """
+        Recursive cyclic structure identifier; uses list not dictionary, so we preserve ring ordering.
+
+        Args:
+          pairs ():
+          upto (integer): current molecule index we're examining
+          previous (list of integers): previous molecule indices we visited prior to current molecule
+
+        Returns:
+          flag indicating whether to stop the recursion, and list of molecule indices visited
+        """
         if upto==None:
             return False, previous
         if upto in previous:
@@ -319,6 +259,17 @@ class HIVStructures:
         return self.cyclic_recurse( pairs, pairs[upto], previous )
 
     def get_cyclic( self, dat, dr2_table, rcut ):
+        """
+        Identify cyclic structures via recursion.
+
+        Args:
+          dat (): ?
+          dr2_table (2D matrix of float): dr2_table[i][j] is the separation between molecules i and j
+          rcut (float): cutoff for pair detection
+
+        Returns:
+          list of integer lists, with each sublist denoting a cyclic structure and sublist members denoting molecules indices in that ring
+        """
         rings = {}
         pairs = self.get_closest_pairs( dr2_table, rcut )
         while len(pairs) > 0:
@@ -340,6 +291,19 @@ class HIVStructures:
     # Returns map of unique_trimer_key => trimer structure
     #
     def get_trimers( self, ntd_dr2_table, ntd_rcut, ctd_dr2_table, ctd_rcut ):
+        """
+        Identify trimer-of-dimers structures, given NTD/NTD and CTD/CTD monomer pair tables
+
+        Args:
+          ntd_dr2_table (2D matrix of float): ntd_dr2_table[i][j] is the separation between NTDs of molecules i and j
+          ntd_rcut (float): cutoff for NTD pair detection
+          ctd_dr2_table (2D matrix of float): ntd_dr2_table[i][j] is the separation between CTDs of molecules i and j
+          ctd_rcut (float): cutoff for CTD pair detection
+
+        Returns:
+          list of integer lists, with each sublist denoting a trimer-of-dimers structure and sublist members denoting molecules indices in that structure
+        """
+
         ntd_pairs = self.get_closest_pairs( ntd_dr2_table, ntd_rcut )
         ctd_pairs = self.get_closest_pairs( ctd_dr2_table, ctd_rcut )
         
@@ -397,14 +361,19 @@ class HIVStructures:
 
         return [ trimers[key] for key in trimers ]
 
-
-#
-# Slightly different to the save atom routine in PDBData;
-# each structure has same "internal" chainID values, and
-# structures are separated into PDB 'MODEL' sections.
-# once again, we assume structures are lists of monomer ids.
-#
 def save_structures( fpath, structures, dat ):
+    """
+    Slightly different to the save routines in PDBD module; each structure
+    has the same "internal" chainID values, and structures are separated into
+    PDB 'MODEL' sections. We assume structures are lists of monomer ids.
+
+    Args:
+      fpath (string): path to PDB file for output
+      structures (list of integer lists): sublists are individual structures, sublist elements are molecule indices for structure members
+
+    Returns:
+      list of integer lists, with each sublist denoting a trimer-of-dimers structure and sublist members denoting molecules indices in that structure
+    """
     chains = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789'
     f = open( fpath, 'w' )
     serial = 1
@@ -421,7 +390,8 @@ def save_structures( fpath, structures, dat ):
                     a2['serial'] = serial # change this to retain original serial?
                     serial += 1
 
-                    print >>f, make_PDB_line( a2 )
+#                    print >>f, make_PDB_line( a2 )
+                    print >>f, PDB.MakePDBAtomLine( a2 )
                 print >>f, 'TER'
             chain_i += 1
         print >>f, 'ENDMDL'
@@ -433,11 +403,17 @@ def save_structures( fpath, structures, dat ):
 ##########################################################
 
 
-#
-# convert command line parameters into something more useful, in particular
-# expand the resSeq data into a list of indices. Not currently used!
-#
 def get_params( argv ):
+    """
+    Convert command line parameters into a more useful dictionary of key => [val1,val2,...].
+    Also converts resSeq range definitions into lists of integers.
+
+    Args:
+      argv (list of strings): input arguments in the form 'key=val1,val2,...'
+
+    Returns:
+      Dictionary of parameters, with key => [val1,val2,...]
+    """
     params = {}
     for i in range( 0, len(argv) ):
         tokens = argv[i].split('=')
