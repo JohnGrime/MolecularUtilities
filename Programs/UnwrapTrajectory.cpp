@@ -25,9 +25,11 @@ int main( int argc, char** argv )
 	if( argc < 3 )
 	{
 		printf( "\n" );
-		printf( "Unwrap molecules in a LAMMPS trajectory, so that they are not split across periodic boundaries.\n" );
+		printf( "Usage: %s in_traj out_traj\n", argv[0] );
 		printf( "\n" );
-		printf( "%s <in_traj> <out_traj>\n", argv[0] );
+		printf( "Where:\n" );
+		printf( "\t  - in_traj : input LAMMPS trajectory\n" );
+		printf( "\t  - out_traj : output LAMMPS trajectory\n" );
 		printf( "\n" );
 		exit( -1 );
 	}

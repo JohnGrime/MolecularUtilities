@@ -31,14 +31,11 @@ Running the program with no command line options revelas a brief user guide:
 
 	MolecularUtilities $ bin/AxisAlign 
 
-	Usage:
+	Usage: bin/AxisAlign <input PDB> [-]x|y|z [-]x|y|z [-]x|y|z [ "key1=val1,val2-val3;key2=val4" ]
 
-	bin/AxisAlign <input PDB> [-]x|y|z [-]x|y|z [-]x|y|z [ "key1=val1,val2-val3;key2=val4" ]
-
-	Cartesian axis order overrides the defauly x,y,z. ALL axes must be
-	specified, and a leading '-' indicates the axis is reflected.
-
-	An optional set of filters can be included for the generation of the molecular axes.
+	Where:
+	  - Cartesian axis order overrides the defauly x,y,z. ALL axes must be specified, and a leading '-' indicates the axis is reflected.
+	  - An optional set of filters can be included for the generation of the molecular axes.
 
 	Output is 'mol_axes.pdb' (molecular axes) and 'aligned.pdb' (PDB aligned to specified axes).
 	Note that 'mol_axes.pdb' refers to the original PDB file, not the aligned structure.
@@ -58,30 +55,34 @@ Running the program with no command line options revelas a brief user guide:
 
 	 bin/AxisAlign PDB_sources/2ymk.B.pdb y x z "name=CA"
 
-Here, we define a filter such that only the atoms with the name `CA` (i.e., carbon alpha atoms) are used to calculate the molecular axes. The results are shown below, where the initial structure is rendered in red and the aligned structure is in green. At the lower left of the image can be seen a set of axis indicators, where Cartesian x-, y- and z-axes are shown using red, green, and blue arrows respectively.
+Here, we define a filter such that only the carbon alpha atoms of the protein backbone (`name=CA`) are used to calculate the molecular axes. The results are shown below, where the initial structure is rendered in red and the aligned structure is in green. At the lower left of the image can be seen a set of axis indicators, where Cartesian x-, y- and z-axes are shown using red, green, and blue arrows respectively.
 
 ![aligned structure](../Images/AA_1.png)
 
 
 ## <a name="BestStructuralMatch"></a> BestStructuralMatch
 
-_This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure after superposing the two structures onto one another such that RMSD is minimized as much as possible._
+_This program finds the molecular structure in a data set that has the lowest root-mean-squared deviation (RMSD) from a reference structure after superposing the two structures for minimized RMSD._
 
 This functionality is useful to identify one or more "typical" conformations of a molecule, given an ensemble of structures.
 
 Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/BestStructuralMatch 
+
 	Usage: bin/BestStructuralMatch reference.pdb set_size data.pdb [filter_name=v1,v2,...] [filter_name=v1,v2,...]
+
 	Where:
 	  - reference.pdb : the reference structure(s) to compare to
 	  - set_size : number of consecutive PDB molecules in the input file to group
 	  - data.pdb : the potential candidate structures to compare to reference.pdb
 	  - OPTIONAL filters : used in the superposition/RMSD comparison
+
 	Notes:
 	  Consecutive set_size entries from reference.pdb and data.pdb are grouped for superposition/RMSD calculation.
 	  Closest match to reference in data set saved to 'best_match.pdb', with some info in REMARK lines.
 	  ALL atom data is written in 'best_match.pdb', not just the atoms used in the superposition/RMSD calculation.
+
 	MolecularUtilities $ 
 
 **Example**: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). Although the proteins in this ring are in principle identical, the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. Let's see how different they are:
@@ -95,23 +96,26 @@ Running the program with no command line options reveals a brief user guide:
 	Unable to load 1 structures from 'PDB_sources/3P05.pdb'; only managed 0! Assuming EOF and stopping here.
 	MolecularUtilities $
 
-Here we specify to only use atoms with name `CA` for the comparison, and only use atoms from residues numbered 1 to 145 (these form the "head" of each protein).
+Here we specify to only use atoms with name `CA` for the comparison, and only use residue numbers 1 to 145 in each protein (the "heads" of each molecule).
 
-The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD for the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure (specified as the first entry in the reference PDB file, `3P05.pdb`) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are very similar (< 1 Angstrom RMSD).
+The output tells us how many atoms pass the filter for each molecule in the data file, and the RMSD for the reference structure before and after superposition. Not surprisingly, the closest match to the reference structure from `3P05.pdb` (assumed to be the first entry in the file) is ... the first entry in the `3P05.pdb` file! However, we can see that the structure of the "heads" of other proteins in the ring are also very similar (< 1 Angstrom RMSD).
 
 
 ## <a name="Centroids"></a> Centroids
 
-_Extract the centroid "pseudoparticles" (i.e. the averaged position of each specified particle) from a set of PDB input structures._
+_Extract the centroid "pseudoparticles" (i.e. the averaged position of each particle) from a set of PDB input structures._
 
-This functionality is useful to generate the average location of particles whose locations fluctuate. It can be combined with the [BestStructuralMatch](#BestStructuralMatch) program to generate the "average" structure of a molecule given a set of similar natural conformations, and then extracting which of the input conformations is the closest match to this "average" structure.
+This functionality is useful to generate the average location of particles whose locations fluctuate. It can be combined with the [BestStructuralMatch](#BestStructuralMatch) program to generate the "average" structure of a molecule, given a set of similar natural conformations, and then determine the conformation that is the closest match to this "average" structure.
 
 Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Centroids 
+
 	Usage: bin/Centroids input.pdb set_size
+
 	Where:
 	  - set_size : number of consecutive PDB molecules in the input file to group
+
 	MolecularUtilities $ 
 
 As shown in the output information above, the user may specify a `set_size` parameter to indicate how many consecutive entries in the PDB file are treated as a single "molecule" (with entries delineated by `TER` lines). This parameter is typically `1`.
@@ -126,19 +130,23 @@ This functionality can be useful when estimating effective particle volumes in a
 Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/Distances
+
 	Usage: bin/Distances input=name:filepath.pdb[:min_samples[:set_size]] input=name:filepath.pdb ... rcut=X [filters="filter_string;filter_string;..."] [same="name:resSeq,name:resSeq;name:resSeq,name:resSeq;..."] [histogram_prefix=X] [histogram_res=X]
+
 	Where:
-	  input : define an input PDB:
-	    -name : name for input set.
-	    -min_samples : OPTIONAL minimum number of samples required to print distances (default = 1).
-	    -set_size : OPTIONAL only measure over consecutive 'set_size' mol groups (useful for structures superposed onto common reference frame, default = all in file).
-	  filters : PDB-style filtering.
-	  same : OPTIONAL definition of atoms to consider the same, to generate/prints additional distance info.
-	  histogram_prefix : OPTIONAL prefix for saved histograms of distances; if not specified, no histograms written.
-	  histogram_res : OPTIONAL resolution (bins per unit distance) for histograms (ignored if histogram_prefix not defined).
+	  - input : define an input PDB:
+	      - name : name for input set.
+	      - min_samples : OPTIONAL minimum number of samples required to print distances (default = 1).
+	      - set_size : OPTIONAL only measure over consecutive 'set_size' mol groups (useful for structures superposed onto common reference frame, default = all in file).
+	  - filters : PDB-style filtering.
+	  - same : OPTIONAL definition of atoms to consider the same, to generate/prints additional distance info.
+	  - histogram_prefix : OPTIONAL prefix for saved histograms of distances; if not specified, no histograms written.
+	  - histogram_res : OPTIONAL resolution (bins per unit distance) for histograms (ignored if histogram_prefix not defined).
+
 	Examples:
 	  bin/Distances input=test:blah.pdb:4 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
 	  bin/Distances input=test1:blah1.pdb:4 input=test2:blah2.pdb:4:2 rcut=10.0 filters="name:CA;resSeq:3,6,12-45,112-116" same="CA:18,GCA:18;CA:45,GCA:45" 
+
 	MolecularUtilities $ 
 
 **Example**: the [3P05](https://www.rcsb.org/structure/3P05) PDB file contains a ring of five proteins from the human immunodeficiency virus type 1 (HIV-1). The proteins in this ring are in principle identical, but the experimental structures for each protein are slightly different due to e.g. thermal fluctuations. This also means that the separations between pairs of particles in adjacent proteins "around" the ring will likewise differ slightly. Let's take a look at the carbon alpha atoms of the first 20 residues of each protein, ignoring any pairs further apart than 10 Angstrom (1 nanometer):
@@ -199,6 +207,7 @@ Running the program with no command line options reveals a brief user guide:
 	    CA:18 CA:18 :    6.592    6.747    7.021    0.173    0.077 (   5)    6.592    6.652    6.661    6.810    7.021 
 	    CA:18 CA:19 :    7.220    7.527    7.767    0.245    0.109 (   5)    7.220    7.312    7.644    7.693    7.767 
 	    CA:19 CA:20 :    9.745    9.822    9.989    0.114    0.057 (   4)    9.745    9.751    9.802    9.989 
+	MolecularUtilities $
 
 Here we only examine distances from a single input set (`3P05`), but you can actually pass in multiple files and see a side-by-side comparison of the distance data to look for any interesting differences.
 
@@ -216,30 +225,28 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/FluctuationSpectum  traj=path  max_k=X max_l=X  head_type=X[,X,...] tail_type=X[,X,...]  gx=X gy=X  [delta_q=X] [scale=X] [which=X] [histogram=X] [out_prefix=X] [filter=X] [remap=X]
 
 	Where:
+	  - max_k, max_l : max integer wave numbers on x and y axes respectively.
+	  - head_type, tail_type : LAMMPS atom types for head and terminal tail beads.
+	  - gx, gy  : grid cell counts on x and y axes for midplane calculations.
 
-	 - max_k, max_l : max integer wave numbers on x and y axes respectively.
-	 - head_type, tail_type : LAMMPS atom types for head and terminal tail beads.
-	 - gx, gy  : grid cell counts on x and y axes for midplane calculations.
-
-	 - delta_q   : OPTIONAL resolution of output spectrum histogram (default: 0.05).
-	 - scale     : OPTIONAL scaling for input->output length units (default: 1.0).
-	 - which     : OPTIONAL setting for which monolayer: 'upper', 'lower', 'both', 'midplane' (default: 'both').
-	 - histogram : OPTIONAL per-type histogram bin width in OUTPUT length units (ignored where <= 0.0).
-	 - save_midplane : OPTIONAL flag to save the midplane coordinates as xyz (default: no midplane written).
-	 - out_prefix: OPTIONAL output spectrum file prefix (default: 'spectrum').
-	 - filter: OPTIONAL grid filter cell size, with contents of isolated cells ignored (default: no filtering).
-	 - remap: OPTIONAL remap specifier, with most populated cell (via specified type) used recentre/wrap data (default: no remapping).
-	 - start: OPTIONAL unit-based start frame in trajectory. Negative values ignored (default: -1).
-	 - stop: OPTIONAL unit-based stop frame in trajectory. Negative values ignored (default: -1).
-	 - save_raw: OPTIONAL flag to save raw (i.e. non-binned) spectral values. Negative values ignored (default: -1).
+	  - delta_q   : OPTIONAL resolution of output spectrum histogram (default: 0.05).
+	  - scale     : OPTIONAL scaling for input->output length units (default: 1.0).
+	  - which     : OPTIONAL setting for which monolayer: 'upper', 'lower', 'both', 'midplane' (default: 'both').
+	  - histogram : OPTIONAL per-type histogram bin width in OUTPUT length units (ignored where <= 0.0).
+	  - save_midplane : OPTIONAL flag to save the midplane coordinates as xyz (default: no midplane written).
+	  - out_prefix: OPTIONAL output spectrum file prefix (default: 'spectrum').
+	  - filter: OPTIONAL grid filter cell size, with contents of isolated cells ignored (default: no filtering).
+	  - remap: OPTIONAL remap specifier, with most populated cell (via specified type) used recentre/wrap data (default: no remapping).
+	  - start: OPTIONAL unit-based start frame in trajectory. Negative values ignored (default: -1).
+	  - stop: OPTIONAL unit-based stop frame in trajectory. Negative values ignored (default: -1).
+	  - save_raw: OPTIONAL flag to save raw (i.e. non-binned) spectral values. Negative values ignored (default: -1).
 
 	Notes:
+	  - Be careful if you use 'which=midplane', as the high frequency components of the spectrum (larger q values)
+	    will be limited by the resolution of the midplane grid (as specified by 'gx' and 'gy' parameters).
+	  - The filtering assigns head group particles to a 3D grid with the specified size. Any cells with no neighbours
+	    have their contents ignored.
 
-	Be careful if you use 'which=midplane', as the high frequency components of the spectrum (larger q values)
-	will be limited by the resolution of the midplane grid (as specified by 'gx' and 'gy' parameters).
-
-	The filtering assigns head group particles to a 3D grid with the specified size. Any cells with no neighbours
-	have their contents ignored.
 	MolecularUtilities $ 
 
 
@@ -263,48 +270,46 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/GenerateMembranes [bond_length=X] [leaflet_separation=X] [lipid=t1,t1,...[:b1,b2,...][:a1,a2,...], ...] [sphere=monolayer|bilayer:COMPOSITION:outer_r:APL, ...] [plane=bilayer|monolayer:COMPOSITION:N:APL, ...]
 
 	Where:
-
-	bond_length: OPTIONAL default separation between bound particles (default: 7.5 Angstrom)
-	leaflet_separation: OPTIONAL separation between inner and outer monolayere leaflets in a bilayer (default: 7.5 Angstrom)
-
-	lipid: lists of particle types defining a lipid molecule, followed by optional lists of bond and angle types (default bond and angle type: 1)
-	sphere: define a spherical mono- or bilayer of the specified lipid composition, radius, and area per lipid
-	plane: define a planar mono- or bilayer of the specified lipid composition, NxN lipid grid, and area per lipid
-
-	COMPOSITION : comma-separated lists of lipid types and their relative proportions, separated by question mark.
+	  - bond_length: OPTIONAL default separation between bound particles (default: 7.5 Angstrom)
+	  - leaflet_separation: OPTIONAL separation between inner and outer monolayere leaflets in a bilayer (default: 7.5 Angstrom)
+	  - lipid: lists of particle types defining a lipid molecule, followed by optional lists of bond and angle types (default bond and angle type: 1)
+	  - sphere: define a spherical mono- or bilayer of the specified lipid composition, radius, and area per lipid
+	  - plane: define a planar mono- or bilayer of the specified lipid composition, NxN lipid grid, and area per lipid
+	  
+	  COMPOSITION : comma-separated lists of lipid types and their relative proportions, separated by question mark.
 
 	Examples:
 
-	1. bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
+		1. bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
 
-	- Define a 3-site lipid (atom types 1,2,3), referred to in future as lipid type 1.
-	- Create a spherical bilayer (using lipid type 1) of radius 100 Angstrom and area per lipid 70 Angstrom**2.
+		- Define a 3-site lipid (atom types 1,2,3), referred to in future as lipid type 1.
+		- Create a spherical bilayer (using lipid type 1) of radius 100 Angstrom and area per lipid 70 Angstrom**2.
 
-	2. bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
+		2. bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
 
-	- Specify a default bond length connecting particles of length 7.5 Angstrom.
-	- Specify a default separation of 7.5 Angstroms between monolayer leaflets.
-	- Define TWO lipid types:
-	    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
-	    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
-	- Create a spherical bilayer with the following properties:
-	    - Use lipid types 1 and 2 to create a 1:1 ratio of lipids in the bilayer.
-	    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
+		- Specify a default bond length connecting particles of length 7.5 Angstrom.
+		- Specify a default separation of 7.5 Angstroms between monolayer leaflets.
+		- Define TWO lipid types:
+		    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+		    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+		- Create a spherical bilayer with the following properties:
+		    - Use lipid types 1 and 2 to create a 1:1 ratio of lipids in the bilayer.
+		    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
 
-	3. bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
+		3. bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
 
-	- Define TWO lipid types:
-	    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
-	    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
-	- Create a spherical bilayer with the following properties:
-	    - Use lipid types 1 and 2 to create a 10:12 ratio of lipids in the bilayer.
-	    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
+		- Define TWO lipid types:
+		    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+		    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+		- Create a spherical bilayer with the following properties:
+		    - Use lipid types 1 and 2 to create a 10:12 ratio of lipids in the bilayer.
+		    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
 
 	Notes:
 
-	Lipid types are UNIT BASED and correspond to the order in which lipid definitions occurred.
-	Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
-	If molecule proportions omitted, equal proportions used.
+	  - Lipid types are UNIT BASED and correspond to the order in which lipid definitions occurred.
+	  - Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
+	  - If molecule proportions omitted, equal proportions used.
 
 	MolecularUtilities $ 
 
@@ -373,12 +378,10 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/LAMMPSCombiner path:dx,dy,dz:adjust_topo_types path:dx,dy,dz:adjust_topo_types [check=X]
 
 	Where:
-
-	  path : LAMMPS config file
-	  dx,dy,dz : offsets to translate system
-	  adjust_topo_types : 1 where bond/angle types should be adjusted to follow previous data
-
-	  check : OPTIONAL max bond length for sanity check of final data
+	  - path : LAMMPS config file
+	  - dx,dy,dz : offsets to translate system
+	  - adjust_topo_types : 1 where bond/angle types should be adjusted to follow previous data
+	  - check : OPTIONAL max bond length for sanity check of final data
 
 	MolecularUtilities $ 
 
@@ -398,9 +401,8 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/LAMMPSToXYZ  type  in_path  [out=path] [has_q]
 
 	Where:
-
-	  type : either 'data' or 'traj'
-	  has_q : optional switch to assume data files contain charges
+	  - type : either 'data' or 'traj'
+	  - has_q : optional switch to assume data files contain charges
 
 	MolecularUtilities $ 
 
@@ -422,11 +424,11 @@ Running the program with no command line options reveals a brief user guide:
 	Where:
 	  - aname : atom name for the surface beads
 	  - rname : residue name for the surface beads
-	  - TER   : OPTIONAL flag to insert TER lines after every ATOM
+	  - TER : OPTIONAL flag to insert TER lines after every ATOM
 
 	Example:
 
-	 bin/SphereArbitrary  100.0  350  PNT  SPH > my_sphere.pdb
+	bin/SphereArbitrary  100.0  350  PNT  SPH > my_sphere.pdb
 
 	Note that the number of points may not actually be target_N; it should be close, though!
 
@@ -444,6 +446,7 @@ Running the program with no command line options reveals a brief user guide:
 	MolecularUtilities $ bin/SphereBySubdivision
 
 	Usage: bin/SphereBySubdivision  <radius> <n_subdiv>  <aname> <rname>
+
 	Where:
 	  - aname : atom name for the surface beads
 	  - rname : residue name for the surface beads
@@ -467,56 +470,56 @@ Running the program with no command line options reveals a brief user guide:
 
 	Where:
 
-		 -target: input PDB with molecules to superpose ONTO
-		 -structures: input PDB with molecule to superpose ONTO those in "target"
-		 -output: results file
-		 -print_rmsd: print the before and after RMSD of superpositions
+	  - target: input PDB with molecules to superpose ONTO
+	  - structures: input PDB with molecule to superpose ONTO those in "target"
+	  - output: results file
+	  - print_rmsd: print the before and after RMSD of superpositions
 
 	And one or more superposition entries, with parameters (separated by colon, ':'):
 
-		 superpose: molecule indices into current "structures" set, UNIT BASED
-		 onto: molecule indices into current "target" set, UNIT BASED
-		 apply_to: molecule indices into current "structures" set, UNIT BASED
-		 key=values: restrictions on the atoms used in the superposition. For PDB files, these keys are the
-		             PDB ATOM attributes such as "name", "resName", "resSeq" etc (see PDB file format).
+	  - superpose: molecule indices into current "structures" set, UNIT BASED
+	  - onto: molecule indices into current "target" set, UNIT BASED
+	  - apply_to: molecule indices into current "structures" set, UNIT BASED
+	  - key=values: restrictions on the atoms used in the superposition. For PDB files, these keys are the
+	    PDB ATOM attributes such as "name", "resName", "resSeq" etc (see PDB file format).
 
 	Notes:
 
-		 The optional 'set_size' and 'noadvance' parameters control how the contents of input files are considered.
-		 Groups of 'set_size' molecules are read in at a time, and it is on these sets that the superpositions act.
-		 The default 'set_size' is 1, and by default 'noadvance' is set for 'target' and 'structures' This results in
-		 consective sets from 'structures' being superposed onto consective sets from 'target'. Most of the time, you
-		 may wish to superpose only the first set of 'structures' onto all sets in 'target', which is specified as so:
-
-		 -target=a.pdb:1 -structures=b.pdb:1:noadvance
-
-		 Where ranges of values are provided in the values for superposition entries, using the dash character '-',
-		 the range is expanded into an INCLUSIVE set of indices. Checks are performed to ensure that the ranges
-		 are integers and that the start index is <= end index.
-
-		 Where values are provided for the keys in the superposition, the set of atoms to use for the superposition
-		 must have attributes in the list provided; where two atoms have attributes in the list specified, but the
-		 attributes are not identical for both atoms, those atoms are ignored.
-
-		 An empty value list for a particular key denotes that the named attribute must be the same for two atoms to be
-		 included in those atoms used for the superposition calculation. any attributes not specified in the superposition
-		 definition are simply ignored.
+	   The optional 'set_size' and 'noadvance' parameters control how the contents of input files are considered.
+	   Groups of 'set_size' molecules are read in at a time, and it is on these sets that the superpositions act.
+	   The default 'set_size' is 1, and by default 'noadvance' is set for 'target' and 'structures' This results in
+	   consective sets from 'structures' being superposed onto consective sets from 'target'. Most of the time, you
+	   may wish to superpose only the first set of 'structures' onto all sets in 'target', which is specified as so:
+  
+	   -target=a.pdb:1 -structures=b.pdb:1:noadvance
+  
+	   Where ranges of values are provided in the values for superposition entries, using the dash character '-',
+	   the range is expanded into an INCLUSIVE set of indices. Checks are performed to ensure that the ranges
+	   are integers and that the start index is <= end index.
+  
+	   Where values are provided for the keys in the superposition, the set of atoms to use for the superposition
+	   must have attributes in the list provided; where two atoms have attributes in the list specified, but the
+	   attributes are not identical for both atoms, those atoms are ignored.
+  
+	   An empty value list for a particular key denotes that the named attribute must be the same for two atoms to be
+	   included in those atoms used for the superposition calculation. any attributes not specified in the superposition
+	   definition are simply ignored.
 
 	Examples:
 
-		 bin/Superpose -target=tgt.pdb -structures=str.pdb:4:noadvance -output=out.pdb superpose=1,2:onto=1:apply_to=3,4:name=:resName=:resSeq=12-34
+	  bin/Superpose -target=tgt.pdb -structures=str.pdb:4:noadvance -output=out.pdb superpose=1,2:onto=1:apply_to=3,4:name=:resName=:resSeq=12-34
 
-		 calculate superposition of molecules 1 and 2 (combined into single molecule) of str.pdb onto each sequential
-		 molecule of tgt.pdb where the atom names and residue names match, and the residue sequences are in the range of
-		 12 to 34 (inclusive). This superposition transform is applied to molecules 3 and 4 of str.pdb and the results
-		 saved into out.pdb. We specify a set size of 4 for str.pdb, and prevent advancing beyond the first set.
+	  calculate superposition of molecules 1 and 2 (combined into single molecule) of str.pdb onto each sequential
+	  molecule of tgt.pdb where the atom names and residue names match, and the residue sequences are in the range of
+	  12 to 34 (inclusive). This superposition transform is applied to molecules 3 and 4 of str.pdb and the results
+	  saved into out.pdb. We specify a set size of 4 for str.pdb, and prevent advancing beyond the first set.
 
-		 bin/Superpose -target=tgt.pdb:4 -structures=str.pdb:5:noadvance -output=out.pdb superpose=1,2:onto=1,2:apply_to=3,4,5:name=CA,CB:resName=:resSeq=
+	  bin/Superpose -target=tgt.pdb:4 -structures=str.pdb:5:noadvance -output=out.pdb superpose=1,2:onto=1,2:apply_to=3,4,5:name=CA,CB:resName=:resSeq=
 
-		 calculate superposition of molecules 1 and 2 (combined into single molecule) of the first set of 5 consective molecules in str.pdb
-		 onto the combined molecule formed from entries 1 and 2 in each set of tgt.pdb (with tgt.pdb processed using sets of 4 consecutive molecules).
-		 The atom names are one of either "CA" or "CB" but must be the same for the paired atoms used in the superposition. The residue
-		 names and sequence numbers must match, and the results are saved into out.pdb.
+	  calculate superposition of molecules 1 and 2 (combined into single molecule) of the first set of 5 consective molecules in str.pdb
+	  onto the combined molecule formed from entries 1 and 2 in each set of tgt.pdb (with tgt.pdb processed using sets of 4 consecutive molecules).
+	  The atom names are one of either "CA" or "CB" but must be the same for the paired atoms used in the superposition. The residue
+	  names and sequence numbers must match, and the results are saved into out.pdb.
 
 	MolecularUtilities $ 
 
@@ -531,8 +534,10 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/UnwrapTrajectory
 
-	Unwrap molecules in a LAMMPS trajectory, so that they are not split across periodic boundaries.
+	Usage: bin/UnwrapTrajectory in_traj out_traj
 
-	bin/UnwrapTrajectory <in_traj> <out_traj>
+	Where:
+		  - in_traj : input LAMMPS trajectory
+		  - out_traj : output LAMMPS trajectory
 
 	MolecularUtilities $ 
