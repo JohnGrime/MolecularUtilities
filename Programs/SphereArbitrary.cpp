@@ -32,9 +32,11 @@ void print_usage( const char *prog )
 	printf( "\n" );
 	printf( "Usage:\n" );
 	printf( "\n" );
-	printf( "%s  <radius> <target_N>  <aname> <rname> [TER]\n", prog );
+	printf( "%s  radius target_N aname rname [TER]\n", prog );
 	printf( "\n" );
 	printf( "Where:\n" );
+	printf( "  - radius : radius of sphere, in Angstrom\n" );
+	printf( "  - target_N : desired number of points on sphere surface\n" );
 	printf( "  - aname : atom name for the surface beads\n" );
 	printf( "  - rname : residue name for the surface beads\n" );
 	printf( "  - TER   : OPTIONAL flag to insert TER lines after every ATOM\n" );

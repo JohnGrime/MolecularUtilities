@@ -12,10 +12,18 @@ using namespace Util;
 
 void print_usage( const char *prog )
 {
-	printf( "Usage: %s  <radius> <n_subdiv>  <aname> <rname>\n", prog );
+	printf( "\n" );
+	printf( "Usage: %s  radius n_subdiv aname rname\n", prog );
+	printf( "\n" );
 	printf( "Where:\n" );
+	printf( "  - radius : radius of sphere, in Angstrom\n" );
+	printf( "  - n_subdiv: number of polyhedral subdivisions to perform (larger number = more points)\n" );
 	printf( "  - aname : atom name for the surface beads\n" );
 	printf( "  - rname : residue name for the surface beads\n" );
+	printf( "\n" );
+	printf( "Notes:\n" );
+	printf( "  - The number of points generated increases RAPIDLY with n_subdiv.\n" );
+	printf( "  - n_subdiv between 2 and 5 is typically a good starting point.\n" );
 	printf( "\n" );
 }
 

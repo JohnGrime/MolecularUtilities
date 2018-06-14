@@ -416,20 +416,18 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/SphereArbitrary
 
-	Usage:
-
-	bin/SphereArbitrary  <radius> <target_N>  <aname> <rname> [TER]
+	Usage: bin/SphereArbitrary  radius target_N aname rname [TER]
 
 	Where:
+	  - radius : radius of sphere, in Angstrom
+	  - target_N : desired number of points on sphere surface
 	  - aname : atom name for the surface beads
 	  - rname : residue name for the surface beads
 	  - TER : OPTIONAL flag to insert TER lines after every ATOM
 
 	Example:
 
-	bin/SphereArbitrary  100.0  350  PNT  SPH > my_sphere.pdb
-
-	Note that the number of points may not actually be target_N; it should be close, though!
+	  bin/SphereArbitrary  100.0  350  PNT  SPH > my_sphere.pdb
 
 	MolecularUtilities $ 
 
@@ -444,11 +442,17 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/SphereBySubdivision
 
-	Usage: bin/SphereBySubdivision  <radius> <n_subdiv>  <aname> <rname>
+	Usage: bin/SphereBySubdivision  radius n_subdiv aname rname
 
 	Where:
+	  - radius : radius of sphere, in Angstrom
+	  - n_subdiv: number of polyhedral subdivisions to perform (larger number = more points)
 	  - aname : atom name for the surface beads
 	  - rname : residue name for the surface beads
+
+	Notes:
+	  - The number of points generated increases RAPIDLY with n_subdiv.
+	  - n_subdiv between 2 and 5 is typically a good starting point.
 
 	MolecularUtilities $ 
 
