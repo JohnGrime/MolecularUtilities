@@ -430,12 +430,11 @@ def print_usage( prog ):
     print 'Usage: %s input=source.pdb CTD=name,resSeq,rcut NTD=name1,resSeq1,name2,resSeq2,rcut output_prefix=x subunits_per_monomer=x' % ( prog )
     print ''
     print 'Where:'
-    print ''
-    print '\t input: PDB file with subunits separated by TER lines'
-    print '\t CTD: PDB atom name, resSeq, and cutoff in Angstrom to detect CTD dimer pairs (assumes symmetry, same atom on both CTDs)'
-    print '\t NTD: PDB atom names, resSeqs, and cutoff in Angstrom to detect NTD dimer pairs'
-    print '\t output_prefix: prefix for all output files'
-    print '\t subunits_per_monomer: number of consecutive PDB subunits which form a monomer'
+    print '  - input: PDB file with subunits separated by TER lines'
+    print '  - CTD: PDB atom name, resSeq, and cutoff in Angstrom to detect CTD dimer pairs (assumes symmetry, same atom on both CTDs)'
+    print '  - NTD: PDB atom names, resSeqs, and cutoff in Angstrom to detect NTD dimer pairs'
+    print '  - output_prefix: prefix for all output files'
+    print '  - subunits_per_monomer: number of consecutive PDB subunits which form a monomer'
     print ''
     sys.exit( -1 )
 
