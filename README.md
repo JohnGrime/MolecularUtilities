@@ -10,9 +10,11 @@ A suite of tools to assist with molecular simulations and analysis.
 
 ## <a name="Introduction"></a> Introduction
 
-This software is intended to work with file formats from the Protein data bank ([PDB](https://www.rcsb.org/)) and the Large-scale Atomic/Molecular Massively Parallel Simulator ([LAMMPS](http://lammps.sandia.gov/), Sandia National Laboratories).
+This software suite is intended to work with file formats from the Protein data bank ([PDB](https://www.rcsb.org/)) and the Large-scale Atomic/Molecular Massively Parallel Simulator ([LAMMPS](http://lammps.sandia.gov/), Sandia National Laboratories).
 
-All program can be run without command line options for user instructions and example usage.
+All programs and scripts can be run without command line options for user instructions and example usage.
+
+Documentation for the compiled utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Programs), and documentation for the Python utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Scripts).
 
 ## <a name="Requirements"></a> Requirements
 
