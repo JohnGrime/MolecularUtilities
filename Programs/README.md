@@ -510,16 +510,16 @@ Running the program with no command line options reveals a brief user guide:
 
 	Examples:
 
-	  bin/Superpose -target=tgt.pdb -structures=str.pdb:4:noadvance -output=out.pdb superpose=1,2:onto=1:apply_to=3,4:name=:resName=:resSeq=12-34
+	  1. bin/Superpose -target=tgt.pdb -structures=str.pdb:4:noadvance -output=out.pdb superpose=1,2:onto=1:apply_to=3,4:name=:resName=:resSeq=12-34
 
-	  calculate superposition of molecules 1 and 2 (combined into single molecule) of str.pdb onto each sequential
+	  Calculate superposition of molecules 1 and 2 (combined into single molecule) of str.pdb onto each sequential
 	  molecule of tgt.pdb where the atom names and residue names match, and the residue sequences are in the range of
 	  12 to 34 (inclusive). This superposition transform is applied to molecules 3 and 4 of str.pdb and the results
 	  saved into out.pdb. We specify a set size of 4 for str.pdb, and prevent advancing beyond the first set.
 
-	  bin/Superpose -target=tgt.pdb:4 -structures=str.pdb:5:noadvance -output=out.pdb superpose=1,2:onto=1,2:apply_to=3,4,5:name=CA,CB:resName=:resSeq=
+	  2. bin/Superpose -target=tgt.pdb:4 -structures=str.pdb:5:noadvance -output=out.pdb superpose=1,2:onto=1,2:apply_to=3,4,5:name=CA,CB:resName=:resSeq=
 
-	  calculate superposition of molecules 1 and 2 (combined into single molecule) of the first set of 5 consective molecules in str.pdb
+	  Calculate superposition of molecules 1 and 2 (combined into single molecule) of the first set of 5 consective molecules in str.pdb
 	  onto the combined molecule formed from entries 1 and 2 in each set of tgt.pdb (with tgt.pdb processed using sets of 4 consecutive molecules).
 	  The atom names are one of either "CA" or "CB" but must be the same for the paired atoms used in the superposition. The residue
 	  names and sequence numbers must match, and the results are saved into out.pdb.
