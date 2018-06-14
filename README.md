@@ -14,7 +14,7 @@ This software suite is intended to work with file formats from the Protein data 
 
 All programs and scripts can be run without command line options for user instructions and example usage.
 
-Documentation for the compiled utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Programs), and documentation for the Python utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Scripts).
+**Documentation for the compiled utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Programs), and documentation for the Python utilities can be found [here](https://github.com/JohnGrime/MolecularUtilities/tree/master/Scripts)**.
 
 ## <a name="Requirements"></a> Requirements
 
