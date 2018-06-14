@@ -113,7 +113,7 @@ Example output from applying this conversion script to pleiomorphic data from ex
 
 _A script to automatically identify and extract key structual motifs from HIV-1 capsid protein mature lattice structures_
 
-This script processes an input PDB file, and recursively identifies any examples of a number of important structural motifs in human immunodefiency virus type 1 (HIV-1). Running the script with no command line parameters reveals a basic user guide:
+This script processes an input PDB file, and recursively identifies any examples of a number of important structural motifs in human immunodefiency virus type 1 (HIV-1) via detecting adjacent N-terminal domain (NTD) and C-terminal domain (CTD) dimer pairs. Running the script with no command line parameters reveals a basic user guide:
 
 	Scripts $ ./IdentifyHIVStructures.py
 
@@ -128,7 +128,7 @@ This script processes an input PDB file, and recursively identifies any examples
 
 	Scripts $
 
-**Example**: In **Fig. 3a** we see a PDB file from the research group of [John Briggs](https://www2.mrc-lmb.cam.ac.uk/groups/briggs/). This file contains an example region of mature HIV-1 capsid lattice, with a central pentameric protein ring surounded by a number of hexameric protein rings. Each individual protein is depicted in a different color, producing a rather chaotic scene. Note that we do not render loop regions of the protein, only alpha helices; nontheless, the image is rather complicated and confusing.
+**Example**: In **Fig. 3a** we see a PDB file from the research group of [John Briggs](https://www2.mrc-lmb.cam.ac.uk/groups/briggs/). This file contains an example region of mature HIV-1 capsid lattice, with a central pentameric protein ring surounded by a number of hexameric protein rings. Each individual protein is depicted in a different color, producing a rather chaotic scene. Note that we do not render loop regions of the protein, only alpha helices; nontheless, the image is complicated and confusing.
 
 ![Figure 3a](../Images/HIV_1a.png)
 
@@ -161,7 +161,7 @@ To extract potentially interesting local structural information for further anal
 
 	Scripts $
 
-We now have a set of PDB files containing the individual local structures detected in the data set. For example, by plotting the [pentameric ring](https://www.nature.com/articles/nature09640) (`out.rings.5.pdb`) with protein N-terminal domains in red and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3b**.
+We now have a set of PDB files containing the individual local structures detected in the data set. For example, by plotting the [pentameric ring](https://www.nature.com/articles/nature09640) (`out.rings.5.pdb`) with protein NTDs in red and CTDs in gray (with the full structure faded into the background for reference), we produce **Fig. 3b**.
 
 ![Figure 3b](../Images/HIV_1b.png)
 
