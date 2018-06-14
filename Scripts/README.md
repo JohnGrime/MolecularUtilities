@@ -120,3 +120,4 @@ _A script to automatically identify and extract key structual motifs from HIV-1 
 ![Figure 3c](../Images/HIV_1c.png)
 ![Figure 3d](../Images/HIV_1d.png)
 ![Figure 3e](../Images/HIV_1e.png)
+![Figure 3f](../Images/HIV_1f.png)
