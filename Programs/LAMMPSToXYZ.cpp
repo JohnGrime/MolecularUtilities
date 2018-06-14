@@ -29,7 +29,6 @@ int main( int argc, char** argv )
 		printf( "Usage: %s  type  in_path  [out=path] [has_q]\n", argv[0] );
 		printf( "\n" );
 		printf( "Where:\n" );
-		printf( "\n" );
 		printf( "  - type : either 'data' or 'traj'\n" );
 		printf( "  - in_path : path to LAMMPS data file\n" );
 		printf( "  - out_path : OPTIONAL path to outut data file (default: 'output.xyz')\n" );

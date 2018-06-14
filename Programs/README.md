@@ -398,7 +398,6 @@ Running the program with no command line options reveals a brief user guide:
 	Usage: bin/LAMMPSToXYZ  type  in_path  [out=path] [has_q]
 
 	Where:
-
 	  - type : either 'data' or 'traj'
 	  - in_path : path to LAMMPS data file
 	  - out_path : OPTIONAL path to outut data file (default: 'output.xyz')
