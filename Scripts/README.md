@@ -165,18 +165,18 @@ We now have a set of PDB files containing the individual local structures detect
 
 ![Figure 3b](../Images/HIV_1b.png)
 
-By plotting the [hexameric rings](https://www.nature.com/articles/nature09640) (`out.rings.6.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3c**.
+By plotting the [hexameric rings](https://www.nature.com/articles/nature09640) (`out.rings.6.pdb`) with protein NTDs in green and CTDs in gray (with the full structure faded into the background for reference), we produce **Fig. 3c**.
 
 ![Figure 3c](../Images/HIV_1c.png)
 
-By plotting the _first entry_ in the [C-terminal domain dimers](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.ctd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3d**.
+By plotting the _first entry_ in the [C-terminal domain dimers](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.ctd_dimers.pdb`) with protein NTDs in green and CTDs in gray (with the full structure faded into the background for reference), we produce **Fig. 3d**.
 
 ![Figure 3d](../Images/HIV_1d.png)
 
-By plotting the _first entry_ in the [N-terminal domain dimers](https://www.nature.com/articles/nature09640) (`out.ntd_dimers.pdb`) with protein N-terminal domains in green and C-terminal domains in gray (with the full structure faded into the background for reference), we produce **Fig. 3e**.
+By plotting the _first entry_ in the [N-terminal domain dimers](https://www.nature.com/articles/nature09640) (`out.ntd_dimers.pdb`) with protein NTDs in green and CTDs in gray (with the full structure faded into the background for reference), we produce **Fig. 3e**.
 
 ![Figure 3e](../Images/HIV_1e.png)
 
-Finally, by plotting the _first entry_ in the [trimer-of-dimers structures](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.trimers.pdb`) with protein C-terminal domains in gray (N-terminal domains in different colors, with the full structure faded into the background for reference), we produce **Fig. 3f**.
+Finally, by plotting the _first entry_ in the [trimer-of-dimers structures](https://www.cell.com/cell/fulltext/S0092-8674(09)01298-7) (`out.trimers.pdb`) with protein CTDs in gray (NTDs in different colors, with the full structure faded into the background for reference), we produce **Fig. 3f**.
 
 ![Figure 3f](../Images/HIV_1f.png)
