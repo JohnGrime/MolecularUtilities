@@ -49,12 +49,12 @@ Note that although chains can be filtered in this manner, this approach will lik
 	Scripts $
 
 
-**Example 2**: _Extract only the N-terminal domains (i.e., residues in the sequence of approx. 1 to 145 in each chain) from the 3P05 structure_:
+**Example 2**: _Extract only the N-terminal domains (residues in the sequence of 1 to 145 in each chain) from the 3P05 structure_:
 
 	Scripts $ cat ../PDB_sources/3P05.pdb | ./PDBTool.py filter resSeq=1-145 > test.pdb
 	Scripts $
 
-The results of this operation are shown in **Fig. 1c**, where we observe the molecular "skirt" surrounding the central ring structure (formed of residues in the sequence of approx. 1 to 145) has been removed.
+The results of this operation are shown in **Fig. 1c**, where we observe the molecular "skirt" surrounding the central N-terminal ring structure has been removed.
 
 ![Figure 1c](../Images/PDBTool_1c.png)
 
