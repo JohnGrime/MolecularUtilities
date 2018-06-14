@@ -280,36 +280,36 @@ Running the program with no command line options reveals a brief user guide:
 
 	Examples:
 
-		1. bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
-
-		- Define a 3-site lipid (atom types 1,2,3), referred to in future as lipid type 1.
-		- Create a spherical bilayer (using lipid type 1) of radius 100 Angstrom and area per lipid 70 Angstrom**2.
-
-		2. bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
-
-		- Specify a default bond length connecting particles of length 7.5 Angstrom.
-		- Specify a default separation of 7.5 Angstroms between monolayer leaflets.
-		- Define TWO lipid types:
-		    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
-		    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
-		- Create a spherical bilayer with the following properties:
-		    - Use lipid types 1 and 2 to create a 1:1 ratio of lipids in the bilayer.
-		    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
-
-		3. bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
-
-		- Define TWO lipid types:
-		    - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
-		    - Lipid type 2 contains 3 particles (particle types: 1,2,3).
-		- Create a spherical bilayer with the following properties:
-		    - Use lipid types 1 and 2 to create a 10:12 ratio of lipids in the bilayer.
-		    - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
-
-	Notes:
-
-	  - Lipid types are UNIT BASED and correspond to the order in which lipid definitions occurred.
-	  - Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
-	  - If molecule proportions omitted, equal proportions used.
+	  1. bin/GenerateMembranes lipid=1,2,3 sphere=bilayer:1:100:70
+  
+	  - Define a 3-site lipid (atom types 1,2,3), referred to in future as lipid type 1.
+	  - Create a spherical bilayer (using lipid type 1) of radius 100 Angstrom and area per lipid 70 Angstrom**2.
+  
+	  2. bin/GenerateMembranes bond_length=7.5 leaflet_separation=7.5 lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?1,1:100:70
+  
+	  - Specify a default bond length connecting particles of length 7.5 Angstrom.
+	  - Specify a default separation of 7.5 Angstroms between monolayer leaflets.
+	  - Define TWO lipid types:
+	      - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+	      - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+	  - Create a spherical bilayer with the following properties:
+	      - Use lipid types 1 and 2 to create a 1:1 ratio of lipids in the bilayer.
+	      - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
+  
+	  3. bin/GenerateMembranes lipid=1,2,3,3,3 lipid=1,2,3 sphere=bilayer:1,2?10,12:100:70
+  
+	  - Define TWO lipid types:
+	      - Lipid type 1 contains 5 particles (particle types: 1,2,3,3,3).
+	      - Lipid type 2 contains 3 particles (particle types: 1,2,3).
+	  - Create a spherical bilayer with the following properties:
+	      - Use lipid types 1 and 2 to create a 10:12 ratio of lipids in the bilayer.
+	      - Bilayer radius is 100 Angstrom, area per lipid is 70 Angstrom**2.
+  
+	  Notes:
+  
+	    - Lipid types are UNIT BASED and correspond to the order in which lipid definitions occurred.
+	    - Molecule proportions are normalised internally, so they don't need to sum to 1 on the command line.
+	    - If molecule proportions omitted, equal proportions used.
 
 	MolecularUtilities $ 
 
