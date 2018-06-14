@@ -37,11 +37,11 @@ def parse_line( line, line_info ):
 	directly by user code!
 
 	Args:
-	line (string): PDB file line (assumes ATOM or HETATM entry)
-	line_info (dictionary): provides retrieval of start/end columns and conversion routines
+	  line (string): PDB file line (assumes ATOM or HETATM entry)
+	  line_info (dictionary): provides retrieval of start/end columns and conversion routines
 
 	Returns:
-	Dictionary of parsed atom data
+	  Dictionary of parsed atom data
 	"""
 	parsed = {}
 	for key in line_info.keys():
@@ -282,20 +282,20 @@ def FilterAtomsByIndex( in_atoms, in_indices, filters ):
 	Returns:
 	  A list of INDICES into in_atoms that passed the specified filters.
 	"""
-    out_indices = []
-    for index in in_indices:
-        a = in_atoms[index]
-        #
-        # See whether "a" passes the filters
-        #
-        add_atom = True
-        for key in filters:
-            if (key in a) and (a[key] not in filters[key]):
-                add_atom = False
-                break
-        #
-        # Add "a" to "atoms", if appropriate
-        #
-        if add_atom == True:
-            out_indices.append( index )
-    return out_indices
+	out_indices = []
+	for index in in_indices:
+		a = in_atoms[index]
+		#
+		# See whether "a" passes the filters
+		#
+		add_atom = True
+		for key in filters:
+			if (key in a) and (a[key] not in filters[key]):
+				add_atom = False
+				break
+		#
+		# Add "a" to "atoms", if appropriate
+		#
+		if add_atom == True:
+			out_indices.append( index )
+	return out_indices
