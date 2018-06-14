@@ -105,7 +105,7 @@ Running the script with no command line parameters reveals a basic user guide:
 
 	Scripts $
 
-Example output from applying this conversion script to experimental data for the HIV-1 capsid (provided by Simone Mattei) is shown in **Fig. 2**.
+Example output from applying this conversion script to experimental data for the HIV-1 capsid (provided by Simone Mattei) is shown in **Fig. 2**, where pentameric and hexameric capsomeres are rendered in red and green, respectively.
 
 ![An example of unrefined HIV-1 capsid reconstructions](../Images/Simo.png)
 
