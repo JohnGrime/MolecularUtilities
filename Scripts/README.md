@@ -8,7 +8,7 @@ This guide assumes basic familiarity with the [PDB file format](https://www.rcsb
 
 ## <a name="PDBTool"></a> PDBTool
 
-*A Swiss army knife for PDB manipulation*
+_A Swiss army knife for PDB manipulation_
 
 This script performs a wide range of useful operations on PDB data piped in over `stdin`. Running the script with no command line parameters reveals a basic user guide:
 
@@ -74,7 +74,7 @@ Note that this same result can also be achieved by piping the results of a filte
 ![Figure 1d](../Images/PDBTool_1d.png)
 
 
-**Example X**: _Extract only the carbon alpha atoms of the N-terminal domain of 3P05's chain C, recenter it, and then scale it by a factor of two_:
+**Example 4**: _Extract only the carbon alpha atoms of the N-terminal domain of 3P05's chain C, recenter it, and then scale it by a factor of two_:
 
 	Scripts $ cat ../PDB_sources/3P05.pdb | ./PDBTool.py filter name=CA resSeq=1-145 | ./PDBTool.py extract_chains C | ./PDBTool.py recentre | ./PDBTool.py scale 2 > test.pdb
 	Scripts $
@@ -82,3 +82,32 @@ Note that this same result can also be achieved by piping the results of a filte
 The results of this rather bizarre sequence of operations is shown in **Fig. 1e**.
 
 ![Figure 1e](../Images/PDBTool_1e.png)
+
+## <a name="SimoConvert"></a> SimoConvert
+
+_A script to convert the structural information of [Simone Mattei and co-workers](http://science.sciencemag.org/content/354/6318/1434.long) into geometric data suitable for visualization and manipulation_
+
+This script extracts specific data from Simone Mattei's XML files in order to generate simpler PDB representations of the key geometric capsomeres. Running the script with no command line parameters reveals a basic user guide:
+
+	Scripts $ ./SimoConvert.py 
+
+	Usage: ./SimoConvert.py input=file.x3d [edge_name=X] [edge_resSeq=X] [scale=X] [output_prefix=X]
+
+	Where:
+
+	- input : x3d file for analysis
+	- edge_name : OPTIONAL PDB atom name for resultant capsomere edge points (default: CA)
+	- edge_resSeq : OPTIONAL PDB residue number for resultant capsomere edge points (default: 1)
+	- scale : OPTIONAL scaling of molecular coords (default: 1.0)
+	- output_prefix : OPTIONAL output prefix for resultant files (default: output)
+
+	Scripts $
+
+Example output from applying this conversion script to experimental data for the HIV-1 capsid (provided by Simone Mattei) is shown in **Fig. 2**.
+
+![An example of unrefined HIV-1 capsid reconstructions](../Images/Simo.png)
+
+## <a name="IdentifyHIVStructures"></a> IdentifyHIVStructures
+
+_A script to automatically identify and extract key structual motifs from HIV-1 capsid protein mature lattice structures_
+
