@@ -5,17 +5,11 @@
 import sys
 
 #
-# Made python3 compatible:
-#  - no non-method print calls
-#  - no X.has_key()
-#
-# Also added method to create empty PDB atom object.
-# Note : I swapped the PDB coordinate from 8.2 to 8.2, for the extra leading digit!
-#
-
-#
-# Returns list of molecules, where each molecule is a list of atom entries.
-# 	atom entry: flag ( 'ATOM', 'HETATM' ) + other standard pdb fields in a dictionary.
+# Default descriptions of the elements in a PDB ATOM/HETATM line. Maps a PDB element
+# name onto the following information:
+#   - start/stop : UNIT BASED column indices into a PDB line string specifying the element location
+#   - converter : routine to convert a string into a suitable data type for the element.
+# These are basically the standard PDB fields
 #
 PDB_atom_line_info = {
 	'type':       { 'start':1,  'stop':6,  'converter':str },
@@ -36,21 +30,43 @@ PDB_atom_line_info = {
 	'charge':     { 'start':79, 'stop':80, 'converter':str }
 }
 
+
 def parse_line( line, line_info ):
-    parsed = {}
-    for key in line_info.keys():
-        li = line_info[key]
-        converter, i, j = li['converter'], li['start']-1, li['stop']
+	"""
+	Convert a line of text from a PDB file into a parsed atom dictionary. This is not intended to be called
+	directly by user code!
 
-        if i >= len(line): continue
-        if j > len(line): j = len(line)
+	Args:
+	line (string): PDB file line (assumes ATOM or HETATM entry)
+	line_info (dictionary): provides retrieval of start/end columns and conversion routines
 
-        # special case; big PDB files from VMD can have serial=='*****' where > 5 digits
-        if (key=='serial') and (line[i] == '*'): parsed[key] = 1
-        else: parsed[key] = converter( line[i:j].strip() ) # remove leading/trailing whitespace before conversion
-    return parsed
+	Returns:
+	Dictionary of parsed atom data
+	"""
+	parsed = {}
+	for key in line_info.keys():
+		li = line_info[key]
+		converter, i, j = li['converter'], li['start']-1, li['stop']
+
+		if i >= len(line): continue
+		if j > len(line): j = len(line)
+
+		# special case; big PDB files from VMD can have serial=='*****' where > 5 digits
+		if (key=='serial') and (line[i] == '*'): parsed[key] = 1
+		else: parsed[key] = converter( line[i:j].strip() ) # remove leading/trailing whitespace before conversion
+	return parsed
+
 
 def GetPDBMolecules( lines ):
+	"""
+	Convert a set of lines from a PDB file into a set of PDB molecules.
+
+	Args:
+	  lines (list of strings): a list of lines in PDB file format.
+
+	Returns:
+	  A list of molecules, where a molecule is a list of PDB atom dictionaries.
+	"""
 	molecules = []
 	current_molecule = []
 	
@@ -84,7 +100,17 @@ def GetPDBMolecules( lines ):
 
 	return molecules
 
+
 def MakeEmptyPDBAtom():
+	"""
+	Utility routine to return an empty PDB atom dictionary.
+
+	Args:
+	  None.
+
+	Returns:
+	  An 'empty' PDB atom dictionary.
+	"""
 	atom = {}
 	atom['type'] = 'ATOM'
 	atom['serial'] = 1
@@ -105,6 +131,15 @@ def MakeEmptyPDBAtom():
 
 
 def MakePDBAtomLine( atom ):
+	"""
+	Generates a line of text suitable for writing to a PDB file from a PDB atom dictionary.
+
+	Args:
+	  atom (dictionary): A PDB atom dictionary
+
+	Returns:
+	  A string suitable for writing as an ATOM or HETATM line in a PDB file.
+	"""
 	PDB_atom_line_format = '%-6.6s%5.5s %4.4s%1.1s%3.3s %1.1s%4d%1.1s   %8.2f%8.2f%8.2f%6.6s%6.6s          %2.2s%2.2s'
 
 	#check a few things that might be missing, and add dummy values if needed
@@ -136,16 +171,27 @@ def MakePDBAtomLine( atom ):
 	
 	
 	return string
+
 	
-#
-# Filters are simple dictionaries:
-#   key => [ value1, value2, ... ]
-# where the key is one of the entries found in the PDB atoms, and the value list is a set
-# of acceptable values for that key.
-#
-# Returns updated set of filters, based on filters passed in.
-#
 def UpdateFilters( filter_string, filters, keyval_sep = '=', val_sep = ',', resSeq_sep = ':' ):
+	"""
+	Update the information stored in a set of PDB atom filters. Provides progressive generation of sets of filters.
+
+	Args:
+	  filter_string (string): new filter information to add
+	  filters (dictionary): maps a PDB element key onto a list of acceptable values for that element
+	  keyval_sep (string): separator character for key/values strings (default: '=', as in 'key=val')
+	  val_sep (string): delimiter character for lists of values (default: ',', as in 'val1,val2,val3')
+	  resSeq_Sep (string): delimiter for INCLUSIVE integer ranges specified as a resSeq filter (default is ':', as in 'resSeq=1:10')
+
+	Returns:
+	  An updated filter dictionary.
+
+	Notes:
+		Filters are simple dictionaries: key => [ value1, value2, ... ]
+		where the key is one of the entries found in the PDB atoms,
+		and the value list is a set of acceptable values for that key.
+	"""
 	tokens = filter_string.split()
 	for token in tokens:
 		#
@@ -194,10 +240,18 @@ def UpdateFilters( filter_string, filters, keyval_sep = '=', val_sep = ',', resS
 
 	return filters
 
-#
-# Return a list of atoms which pass the specified filters
-#
+
 def FilterAtoms( in_atoms, filters ):
+	"""
+	Return a list of PDB atom dictionaries that pass the specified filers.
+
+	Args:
+	  in_atoms (list of PDB atom dictionaries): input atoms to filter
+	  filters (dictionary): map filter element keys to a list of acceptable value for that key
+
+	Returns:
+	  A list of PDB atom dictionaries that pass the specified filters.
+	"""
 	out_atoms = []
 	for a in in_atoms:
 		#
@@ -215,12 +269,19 @@ def FilterAtoms( in_atoms, filters ):
 			out_atoms.append( dict(a) )
 	return out_atoms
 
-#
-# Return a list of atom INDICES which passed the specified filters!
-# Assumes atom_indices is a list of indices into 'in_atoms' and returns
-# a filtered list of these indices!
-#
+
 def FilterAtomsByIndex( in_atoms, in_indices, filters ):
+	"""
+	Return a list of INDICES of the PDB atom dictionaries that pass the specified filters.
+
+	Args:
+	  in_atoms (list of PDB atom dictionaries): input atom data for filtering
+	  in_indices (list of integer): indices into in_atoms list to apply filters to
+	  filters (dictionary): map filter element keys to a list of acceptable value for that key
+
+	Returns:
+	  A list of INDICES into in_atoms that passed the specified filters.
+	"""
     out_indices = []
     for index in in_indices:
         a = in_atoms[index]

@@ -87,6 +87,8 @@ The results of this rather bizarre sequence of operations is shown in **Fig. 1e*
 
 _A script to convert the structural information of [Simone Mattei and co-workers](http://science.sciencemag.org/content/354/6318/1434.long) into geometric data suitable for straightforward visualization and manipulation_
 
+**Note: Python v3+ is required for this script as it uses the integrated XML processing routines**
+
 This script extracts specific data from Simone Mattei's XML files in order to generate simpler PDB representations of the key geometric elements. This script currently expects the input data to correspond to structural capsomeres of mature capsid protein lattice from human immunodeficiency virus type 1 (HIV-1), which are then sorted into separate pentagonal and hexagonal geometrical data sets whic can act as the basis for complete molecular reconstruction of the viral capsids using e.g. [pre-formed capsomere structures](https://www.nature.com/articles/nature09640).
 
 Running the script with no command line parameters reveals a basic user guide:
