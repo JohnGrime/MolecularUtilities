@@ -395,8 +395,6 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/LammpsToXYZ
 
-	Convert LAMMPS coordinate files into simple xyz format.
-
 	Usage: bin/LAMMPSToXYZ  type  in_path  [out=path] [has_q]
 
 	Where:
