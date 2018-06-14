@@ -17,14 +17,13 @@ This script performs a wide range of useful operations on PDB data piped in over
 	Usage: cat whatever.pdb | PDBTool.py [renumber resSeq_offset] | [fix_chains] | [recentre] | [scale X] | [extract_chains A B C ...] | [extract_mols set_size set_i set_j set_k ...] | [filter key=val,val,... key=val,val,... ]
 
 	Where:
-
-		 renumber        : add resSeq_offset to all residue sequence numbers
-		 fix_chains      : sequentially rename chains to A B C ...
-		 recentre        : move centre of geometry to the origin
-		 scale           : scale coordinates by specified factor
-		 extract_chains  : extract the specified chains (IN THE ORDER SPECIFIED!)
-		 extract_mols    : extract the UNIT_BASED sets of molecules with sets of specified size from the PDB file (molecule = a TER- or MODEL-separated entry)
-		 filter          : filter input PDB with specified filters. Range separator char for resSeq is "-"
+	  - renumber        : add resSeq_offset to all residue sequence numbers
+	  - fix_chains      : sequentially rename chains to A B C ...
+	  - recentre        : move centre of geometry to the origin
+	  - scale           : scale coordinates by specified factor
+	  - extract_chains  : extract the specified chains (IN THE ORDER SPECIFIED!)
+	  - extract_mols    : extract the UNIT_BASED sets of molecules with sets of specified size from the PDB file (molecule = a TER- or MODEL-separated entry)
+	  - filter          : filter input PDB with specified filters. Range separator char for resSeq is "-"
 
 	In all cases, the resultant PDB file is printed to stdout.
 
