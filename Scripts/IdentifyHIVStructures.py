@@ -600,13 +600,13 @@ if len(ntd_dimers) > 0:
     save_structures( fpath, ntd_dimers, dat )
     print '  => %s' % ( fpath )
 
-if len(trimers) > 0:
-    fpath = '%s.trimers.pdb'%( output_prefix )
-    save_structures( fpath, trimers, dat )
-    print '  => %s' % ( fpath )
-
 for key in ntd_rings:
     if len( ntd_rings[key]) > 0:
         fpath = '%s.rings.%d.pdb' % (output_prefix,key)
         save_structures( fpath, ntd_rings[key], dat )
         print '  => %s' % ( fpath )
+
+if len(trimers) > 0:
+    fpath = '%s.trimers.pdb'%( output_prefix )
+    save_structures( fpath, trimers, dat )
+    print '  => %s' % ( fpath )

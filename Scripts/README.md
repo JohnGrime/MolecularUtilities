@@ -155,9 +155,9 @@ To extract potentially interesting local structural information for further anal
 	Output
 	  => out.ctd_dimers.pdb
 	  => out.ntd_dimers.pdb
-	  => out.trimers.pdb
 	  => out.rings.5.pdb
 	  => out.rings.6.pdb
+	  => out.trimers.pdb
 
 	Scripts $
 
