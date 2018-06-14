@@ -97,12 +97,11 @@ Running the script with no command line parameters reveals a basic user guide:
 	Usage: ./SimoConvert.py input=file.x3d [edge_name=X] [edge_resSeq=X] [scale=X] [output_prefix=X]
 
 	Where:
-
-	- input : x3d file for analysis
-	- edge_name : OPTIONAL PDB atom name for resultant capsomere edge points (default: CA)
-	- edge_resSeq : OPTIONAL PDB residue number for resultant capsomere edge points (default: 1)
-	- scale : OPTIONAL scaling of molecular coords (default: 1.0)
-	- output_prefix : OPTIONAL output prefix for resultant files (default: output)
+	  - input : x3d file for analysis
+	  - edge_name : OPTIONAL PDB atom name for resultant capsomere edge points (default: CA)
+	  - edge_resSeq : OPTIONAL PDB residue number for resultant capsomere edge points (default: 1)
+	  - scale : OPTIONAL scaling of molecular coords (default: 1.0)
+	  - output_prefix : OPTIONAL output prefix for resultant files (default: output)
 
 	Scripts $
 
