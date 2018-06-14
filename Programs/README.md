@@ -361,8 +361,7 @@ Running the program with no command line options reveals a brief user guide:
 
 Here, we defined two lipid types with a different "head" bead type, but both have two identical hydrocarbon "tail" beads. The resultant output configuration is shown below, as both a "full" view of the system and a "cut-away" view to better see the bilayer structure; the "head" beads of lipid types 1 and 2 are shown in red and orange respectively, and the "tail" beads are shown in gray.
 
-![A two-component CG spherical bilayer](../Images/GM_1.png)
-![Cut-away view of a two-component CG spherical bilayer](../Images/GM_2.png)
+![CG spherical bilayer](../Images/GM.png)
 
 
 ## <a name="LammpsCombiner"></a> LammpsCombiner
