@@ -57,7 +57,6 @@ class PDBData:
         for line in f:
 
             if line[0:4] in valid_atom_prefixes:
-#                line_data = parse_PDB_line( line, PDB_atom_line_info )
                 line_data = PDB.parse_line( line, PDB.PDB_atom_line_info )
 
                 # skip non-CA
@@ -258,12 +257,11 @@ class HIVStructures:
             return False, previous
         return self.cyclic_recurse( pairs, pairs[upto], previous )
 
-    def get_cyclic( self, dat, dr2_table, rcut ):
+    def get_cyclic( self, dr2_table, rcut ):
         """
         Identify cyclic structures via recursion.
 
         Args:
-          dat (): ?
           dr2_table (2D matrix of float): dr2_table[i][j] is the separation between molecules i and j
           rcut (float): cutoff for pair detection
 
@@ -390,7 +388,6 @@ def save_structures( fpath, structures, dat ):
                     a2['serial'] = serial # change this to retain original serial?
                     serial += 1
 
-#                    print >>f, make_PDB_line( a2 )
                     print >>f, PDB.MakePDBAtomLine( a2 )
                 print >>f, 'TER'
             chain_i += 1
@@ -516,7 +513,7 @@ print '\t %d NTD dimer pairs found.' % ( len(ntd_dimers) )
 #
 
 print 'Detecting cyclic structures ...'
-ntd_rings = structure_identifier.get_cyclic( dat, ntd_dr2_table, ntd_rcut )
+ntd_rings = structure_identifier.get_cyclic( ntd_dr2_table, ntd_rcut )
 for key in ntd_rings:
     print '\t %d rings of length %d' % ( len(ntd_rings[key]), key )
 
