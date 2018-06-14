@@ -120,12 +120,11 @@ This script processes an input PDB file, and recursively identifies any examples
 	Usage: ./IdentifyHIVStructures.py input=source.pdb CTD=name,resSeq,rcut NTD=name1,resSeq1,name2,resSeq2,rcut output_prefix=x subunits_per_monomer=x
 
 	Where:
-
-		 input: PDB file with subunits separated by TER lines
-		 CTD: PDB atom name, resSeq, and cutoff in Angstrom to detect CTD dimer pairs (assumes symmetry, same atom on both CTDs)
-		 NTD: PDB atom names, resSeqs, and cutoff in Angstrom to detect NTD dimer pairs
-		 output_prefix: prefix for all output files
-		 subunits_per_monomer: number of consecutive PDB subunits which form a monomer
+	  - input: PDB file with subunits separated by TER lines
+	  - CTD: PDB atom name, resSeq, and cutoff in Angstrom to detect CTD dimer pairs (assumes symmetry, same atom on both CTDs)
+	  - NTD: PDB atom names, resSeqs, and cutoff in Angstrom to detect NTD dimer pairs
+	  - output_prefix: prefix for all output files
+	  - subunits_per_monomer: number of consecutive PDB subunits which form a monomer
 
 	Scripts $
 
