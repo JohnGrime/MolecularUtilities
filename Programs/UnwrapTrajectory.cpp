@@ -50,6 +50,12 @@ int main( int argc, char** argv )
 	{
 		frame_no++;
 
+		if( feof(in_traj) )
+		{
+			printf( "End of file. Stopping here, frame %d\n", frame_no );
+			break;
+		}
+
 		if( frame_no%10 == 0 ) printf( "%d\n", frame_no );
 
 		//
@@ -57,7 +63,7 @@ int main( int argc, char** argv )
 		//
 		{
 			int result = Util::LAMMPS::LoadTrajectory( in_traj, config, &timestep );
-			if( (result==-1) || feof(in_traj) )
+			if( result==-1 )
 			{
 				printf( "Unable to load trajectory frame. Stopping here, frame %d\n", frame_no );
 				break;

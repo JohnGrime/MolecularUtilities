@@ -1289,12 +1289,20 @@ int LoadTrajectory( FILE *f, Config& config, int* timestep )
 			int ts;
 
 			if( fgets( buffer, maxbuf, f ) == NULL ) continue;
-			if( String::ToInteger( buffer, ts ) != String::ReturnValue::OK )
+			
+			if( String::Tokenize( buffer, tokens, delimiters ) < 1 )
 			{
-				fprintf( stderr, "LAMMPS::%s(): unable to convert timestep '%s' into an integer.\n", __func__, buffer );
-				return -1;
+				fprintf( stdout, "LAMMPS::%s: apparently missing timestep; ignoring\n", __func__ );
 			}
-			if( timestep != nullptr ) *timestep = ts;
+			else
+			{
+				if( String::ToInteger( tokens[0], ts ) != String::ReturnValue::OK )
+				{
+					fprintf( stderr, "LAMMPS::%s(): unable to convert timestep '%s' into an integer.\n", __func__, tokens[0].c_str() );
+					return -1;
+				}
+				if( timestep != nullptr ) *timestep = ts;
+			}
 		}
 		//
 		// Simulation cell
@@ -1339,7 +1347,8 @@ int LoadTrajectory( FILE *f, Config& config, int* timestep )
 		else if( tokens[1] == "NUMBER" && tokens[2] == "OF" && tokens[3] == "ATOMS" )
 		{
 			if( fgets( buffer, maxbuf, f ) == NULL ) continue;
-			if( String::ToInteger( buffer, number_of_atoms ) != String::ReturnValue::OK )
+			if( (ntoks = String::Tokenize( buffer, tokens, delimiters)) < 1 ) continue;
+			if( String::ToInteger( tokens[0], number_of_atoms ) != String::ReturnValue::OK )
 			{
 				fprintf( stderr, "LAMMPS::%s(): unable to convert number of atoms '%s' into a number.\n", __func__, buffer );
 				return -1;
