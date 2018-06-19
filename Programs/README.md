@@ -537,10 +537,11 @@ Running the program with no command line options reveals a brief user guide:
 
 	MolecularUtilities $ bin/UnwrapTrajectory
 
-	Usage: bin/UnwrapTrajectory in_traj out_traj
+	Usage: bin/UnwrapTrajectory in_traj out_traj [scale]
 
 	Where:
 	  - in_traj : input LAMMPS trajectory
 	  - out_traj : output LAMMPS trajectory
+	  - scale : OPTIONAL scale factor to apply to output (default: 1.0)
 
 	MolecularUtilities $ 

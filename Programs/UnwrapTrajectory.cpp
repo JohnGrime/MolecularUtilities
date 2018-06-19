@@ -19,17 +19,18 @@ using namespace Util;
 int main( int argc, char** argv )
 {
 	FILE *in_traj, *out_traj;
-
+	double scale = -1.0;
 	LAMMPS::Config config;
 
 	if( argc < 3 )
 	{
 		printf( "\n" );
-		printf( "Usage: %s in_traj out_traj\n", argv[0] );
+		printf( "Usage: %s in_traj out_traj [scale]\n", argv[0] );
 		printf( "\n" );
 		printf( "Where:\n" );
 		printf( "  - in_traj : input LAMMPS trajectory\n" );
 		printf( "  - out_traj : output LAMMPS trajectory\n" );
+		printf( "  - [scale] : OPTIONAL scale factor to apply to output (default: 1.0)\n" );
 		printf( "\n" );
 		exit( -1 );
 	}
@@ -43,6 +44,16 @@ int main( int argc, char** argv )
 	{
 		printf( "Unable to open output trajectory '%s'.\n", argv[2] );
 		exit( -1 );
+	}
+
+	if( argc > 3 )
+	{
+		scale = atof( argv[3] );
+		if( scale <= 0.0 )
+		{
+			printf( "Bad scale value '%s' => %f\n", argv[3], scale );
+			exit( -1 );
+		}
 	}
 
 	int frame_no = 0, timestep = 0;
@@ -75,6 +86,31 @@ int main( int argc, char** argv )
 		//
 		{
 			config.Unwrap( config.PBC );
+		}
+
+		//
+		// Rescale
+		//
+		if( scale > 0.0 )
+		{
+			config.bounds.minx *= scale;
+			config.bounds.maxx *= scale;
+
+			config.bounds.miny *= scale;
+			config.bounds.maxy *= scale;
+
+			config.bounds.minz *= scale;
+			config.bounds.maxz *= scale;
+
+			for( auto& mol : config.molecules )
+			{
+				for( auto& a : mol.atoms )
+				{
+					a.x *= scale;
+					a.y *= scale;
+					a.z *= scale;
+				}
+			}
 		}
 
 		//
