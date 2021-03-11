@@ -201,6 +201,56 @@ void AlignReferenceFrames( const EigenInfo &target, const EigenInfo &current, do
 	Superposer::Calculate( target_xyz, xyz, M, T );
 }
 
+// Column index parameters are unit based.
+int LoadXYZ(FILE *f, Molecule::MolecularSystem &ms, int xcol=1, int ycol=2, int zcol=3 )
+{
+	char line_buffer[1024];
+	const char *delimiters = " \t\n";
+	std::vector< std::string > toks;
+
+	Molecule::Atom a;
+	Molecule::Molecule mol;
+
+	int line_no = 0;
+	int maxcol = std::max( {xcol, ycol, zcol} );
+
+	ms.molecules.clear();
+
+	while (fgets(line_buffer, 1023, f) != nullptr)
+	{
+		line_no++;
+		String::Tokenize(line_buffer, toks, delimiters);
+
+		if ((int)toks.size() < maxcol)
+		{
+			continue; // error condition?
+		}
+
+		if (String::ToReal(toks[xcol-1],a.x) != String::ReturnValue::OK)
+		{
+			fprintf(stderr, "%s() : line %d : unable to convert x token '%s' into a real number!\n", __func__, line_no, toks[xcol-1].c_str());
+			return -1;
+		}
+
+		if (String::ToReal(toks[ycol-1],a.y) != String::ReturnValue::OK)
+		{
+			fprintf(stderr, "%s() : line %d : unable to convert y token '%s' into a real number!\n", __func__, line_no, toks[ycol-1].c_str());
+			return -1;
+		}
+
+		if (String::ToReal(toks[zcol-1],a.z) != String::ReturnValue::OK)
+		{
+			fprintf(stderr, "%s() : line %d : unable to convert z token '%s' into a real number!\n", __func__, line_no, toks[zcol-1].c_str());
+			return -1;
+		}
+
+		mol.push_back(a);
+	}
+
+	if (mol.size() > 0) ms.molecules.push_back(mol);
+
+	return (int)ms.molecules.size();
+}
 
 int main( int argc, char **argv )
 {
@@ -213,19 +263,34 @@ int main( int argc, char **argv )
 	Molecule::AttributeFilter filter;
 	Molecule::Molecules filtered_molecules;
 
+	bool isPDB = false;
+	int col_idx[] = {1,2,3}; // unit based!
+
 	if( argc < 2 )
 	{
 		printf( "\n" );
 		printf( "Usage:\n" );
 		printf( "\n" );
 		printf( "%s <input PDB> [-]x|y|z [-]x|y|z [-]x|y|z [ \"key1=val1,val2-val3;key2=val4\" ]\n", argv[0] );
+		printf( "%s <input txt> [-]x|y|z [-]x|y|z [-]x|y|z [ xcol ycol zcol ]\n", argv[0] );
+		printf( "\n" );
+		printf( "The suffix of the input file determines if input data is treated as a PDB or not.\n" );
+		printf( "\n" );
+		printf( "For both PDB files (.pdb) and non-PDB files (anything else):\n" );
 		printf( "\n" );
 		printf( "Cartesian axis order overrides the defauly x,y,z. ALL axes must be\n" );
 		printf( "specified, and a leading '-' indicates the axis is reflected.\n" );
 		printf( "\n" );
+		printf( "For PDB files:\n" );
+		printf( "\n" );
 		printf( "An optional set of filters can be included for the generation of the molecular axes.\n" );
 		printf( "\n" );
-		printf( "Output is 'mol_axes.pdb' (molecular axes) and 'aligned.pdb' (PDB aligned to specified axes).\n" );
+		printf( "For non-PDB files:\n" );
+		printf( "\n" );
+		printf( "An optional set of UNIT-BASED columns for reading coords from the input file.\n" );
+		printf( "\n" );
+		printf( "Output is 'mol_axes.pdb' (molecular axes) and 'aligned.pdb' (PDB aligned to specified axes)\n" );
+		printf( "or 'aligned.xyz' (x,y,z coords aligned to specified axes) depending on whether PDB input.\n" );
 		printf( "Note that 'mol_axes.pdb' refers to the original PDB file, not the aligned structure.\n" );
 		printf( "\n" );
 		printf( "Example:\n" );
@@ -238,6 +303,15 @@ int main( int argc, char **argv )
 		printf( "\n" );
 		exit( -1 );
 	}
+
+	//
+	// PDB, or xyz?
+	//
+	{
+		std::vector< std::string > toks;
+		String::Tokenize(argv[1], toks, ".");
+		isPDB = (toks[ toks.size()-1 ] == "pdb") ? true : false;
+	}
 	
 	//
 	// To what world reference frame are we aligning the molecular axes?
@@ -245,9 +319,10 @@ int main( int argc, char **argv )
 	GetWorldReferenceFrame( argc, argv, world );
 
 	//
-	// Any filters specified?
+	// If PDB: Any filters specified?
+	// If not: Assume column indices.
 	//
-	if( argc > 5 )
+	if (isPDB && argc>5)
 	{
 		std::vector<std::string> tokens;
 		
@@ -257,33 +332,59 @@ int main( int argc, char **argv )
 			filter.AddFilter( tokens[i].c_str(), "=", ",", "-" );
 		}
 	}
+	else if (argc == 8)
+	{
+		for (int i=0; i<3; i++)
+		{
+			auto tok = argv[5+i];
+			if (String::ToReal(tok,col_idx[i]) != String::ReturnValue::OK)
+			{
+				fprintf( stderr, "Unable to convert column index %d ('%s') into an integer!\n", i, tok);
+				return -1;
+			}
+		}
+	}
 
 	//
-	// Load the input data; assumes PDB.
+	// Load the input data
 	//
+
 	if( (f=fopen(argv[1],"r")) == NULL )
 	{
 		printf( "Unable to open file '%s'\n", argv[1] );
 		exit( -1 );
 	}
-	Molecule::PDB::Load( f, ms );
-	fclose( f );
-	
-	//
-	// Calculate eigen info from molecule coordinates
-	//
-	int n_total_atoms = 0;
-	for( auto& m : ms.molecules ) n_total_atoms += (int)m.size();
-	int n_filtered_atoms = filter.Filter( ms.molecules, filtered_molecules );
-	printf( "Atom filtering: %d remaining of %d.\n", n_filtered_atoms, n_total_atoms );
-	if( n_filtered_atoms < 3 )
-	{
-		printf( "Too few atoms passed the filter.\n" );
-		exit( -1 );
-	}
-	Molecule::Coords::Get( filtered_molecules, xyz );
-	molecular.Populate( xyz );
 
+	if (isPDB)
+	{
+		Molecule::PDB::Load(f, ms);
+
+		//
+		// Apply filters, if a PDB system
+		//
+
+		int n_total_atoms = 0;
+		for (auto& m : ms.molecules) n_total_atoms += (int)m.size();
+		int n_filtered_atoms = filter.Filter( ms.molecules, filtered_molecules );
+		printf("Atom filtering: %d remaining of %d.\n", n_filtered_atoms, n_total_atoms);
+		if (n_filtered_atoms < 3)
+		{
+			printf("Too few atoms passed the filter.\n");
+			exit( -1 );
+		}
+
+		Molecule::Coords::Get(filtered_molecules, xyz);
+	}
+	else
+	{
+		LoadXYZ(f, ms, col_idx[0], col_idx[1], col_idx[2]);
+		Molecule::Coords::Get( ms.molecules, xyz );
+	}
+
+	fclose( f );
+
+	molecular.Populate( xyz );
+	
 	// Bounding box of initial system
 	{
 		double minx,maxx, miny,maxy, minz,maxz;
@@ -384,8 +485,21 @@ int main( int argc, char **argv )
 			minx,miny,minz, maxx,maxy,maxz, Lx,Ly,Lz, V  );
 	}
 
-	f = fopen( "aligned.pdb", "w" );
-	Molecule::PDB::Print( f, ms );
-	fclose( f );
+
+	if (isPDB)
+	{
+		f = fopen( "aligned.pdb", "w" );
+		Molecule::PDB::Print( f, ms );
+		fclose( f );
+	}
+	else
+	{
+		f = fopen( "aligned.xyz", "w" );
+		for (const auto& a : ms.molecules[0])
+		{
+			fprintf(f, "%f %f %f\n", a.x, a.y, a.z);
+		}
+		fclose( f );		
+	}
 
 }
