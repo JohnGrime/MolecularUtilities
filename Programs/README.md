@@ -31,13 +31,28 @@ Running the program with no command line options revelas a brief user guide:
 
 	MolecularUtilities $ bin/AxisAlign 
 
-	Usage: bin/AxisAlign <input PDB> [-]x|y|z [-]x|y|z [-]x|y|z [ "key1=val1,val2-val3;key2=val4" ]
+	Usage:
 
-	Where:
-	  - Cartesian axis order overrides the defauly x,y,z. ALL axes must be specified, and a leading '-' indicates the axis is reflected.
-	  - An optional set of filters can be included for the generation of the molecular axes.
+	bin/AxisAlign <input PDB> [-]x|y|z [-]x|y|z [-]x|y|z [ "key1=val1,val2-val3;key2=val4" ]
+	bin/AxisAlign <input txt> [-]x|y|z [-]x|y|z [-]x|y|z [ xcol ycol zcol ]
 
-	Output is 'mol_axes.pdb' (molecular axes) and 'aligned.pdb' (PDB aligned to specified axes).
+	The suffix of the input file determines if input data is treated as a PDB or not.
+
+	For both PDB files (.pdb) and non-PDB files (anything else):
+
+	Cartesian axis order overrides the defauly x,y,z. ALL axes must be
+	specified, and a leading '-' indicates the axis is reflected.
+
+	For PDB files:
+
+	An optional set of filters can be included for the generation of the molecular axes.
+
+	For non-PDB files:
+
+	An optional set of UNIT-BASED columns for reading coords from the input file.
+
+	Output is 'mol_axes.pdb' (molecular axes) and 'aligned.pdb' (PDB aligned to specified axes)
+	or 'aligned.xyz' (x,y,z coords aligned to specified axes) depending on whether PDB input.
 	Note that 'mol_axes.pdb' refers to the original PDB file, not the aligned structure.
 
 	Example:
@@ -47,7 +62,7 @@ Running the program with no command line options revelas a brief user guide:
 	This aligns the major axis of the specified atoms in molecule in blah.pdb to the y axis,
 	the secondary axis to the flipped z axis (i.e. {0,0,-1}) and the minor axis to the Cartesian
 	x axis.
-
+	
 	MolecularUtilities $ 
 
 
