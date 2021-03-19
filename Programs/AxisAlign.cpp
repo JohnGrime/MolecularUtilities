@@ -201,11 +201,11 @@ void AlignReferenceFrames( const EigenInfo &target, const EigenInfo &current, do
 	Superposer::Calculate( target_xyz, xyz, M, T );
 }
 
-// Column index parameters are unit based.
+// Column index parameters are UNIT BASED.
 int LoadXYZ(FILE *f, Molecule::MolecularSystem &ms, int xcol=1, int ycol=2, int zcol=3 )
 {
 	char line_buffer[1024];
-	const char *delimiters = " \t\n";
+	const char *delimiters = " \t\n\r";
 	std::vector< std::string > toks;
 
 	Molecule::Atom a;
@@ -240,6 +240,7 @@ int LoadXYZ(FILE *f, Molecule::MolecularSystem &ms, int xcol=1, int ycol=2, int 
 
 		if (String::ToReal(toks[zcol-1],a.z) != String::ReturnValue::OK)
 		{
+			fprintf(stderr,"%d\n", line_no);
 			fprintf(stderr, "%s() : line %d : unable to convert z token '%s' into a real number!\n", __func__, line_no, toks[zcol-1].c_str());
 			return -1;
 		}
@@ -339,7 +340,7 @@ int main( int argc, char **argv )
 			auto tok = argv[5+i];
 			if (String::ToReal(tok,col_idx[i]) != String::ReturnValue::OK)
 			{
-				fprintf( stderr, "Unable to convert column index %d ('%s') into an integer!\n", i, tok);
+				fprintf(stderr, "Unable to convert column index %d ('%s') into an integer!\n", i, tok);
 				return -1;
 			}
 		}
