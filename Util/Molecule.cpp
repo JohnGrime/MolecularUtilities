@@ -192,7 +192,7 @@ int AttributeFilter::Filter( const Molecules &in, Molecules &out ) const
 	Molecules temp; // allows in-place filtering if e.g. &in == &out
 	
 	N = 0;
-	for( const auto in_m : in )
+	for( const auto& in_m : in )
 	{
 		Molecule out_m;
 		
